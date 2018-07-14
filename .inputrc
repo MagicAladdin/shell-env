@@ -1,0 +1,40 @@
+set keymap vi-insert
+Control-a: beginning-of-line
+Control-b: backward-char
+Control-d: delete-char
+Control-e: end-of-line
+Control-f: forward-char
+Control-k: kill-line
+Control-n: next-history
+Control-p: previous-history
+set keymap emacs-ctlx
+v: vi-editing-mode
+Control-v: "\C-xv\e"
+Escape: "\C-xv\e"
+
+set input-meta Off
+set convert-meta On
+set output-meta On
+
+# might need "\ep" / "\en" here
+Meta-p: history-search-backward
+Meta-n: history-search-forward
+
+"\eOd": backward-word
+"\eOc": forward-word
+
+# for linux console
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+"\e[5~": beginning-of-history
+"\e[6~": end-of-history
+"\e[3~": delete-char
+"\e[2~": quoted-insert
+
+# for xterm
+"\eOH": beginning-of-line
+"\eOF": end-of-line
+
+set bell-style visible
+set show-all-if-ambiguous on
+set show-all-if-unmodified on

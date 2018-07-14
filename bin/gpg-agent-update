@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# Gpg-agent SSH support
+#
+
+export GPG_TTY=$(tty)
+
+
+[[ -n "$(pidof gpg-agent)" ]] && gpgconf --kill gpg-agent
+
+# Add ssh support
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+fi
+
+# start waiting for ssh connections
+gpg-connect-agent --verbose /bye
+
+# vim:fenc=utf-8:ft=sh:

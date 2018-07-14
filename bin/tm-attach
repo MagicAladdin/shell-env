@@ -1,0 +1,32 @@
+#!/bin/bash
+
+[[ -f "/etc/init.d/functions.sh" ]] && source /etc/init.d/functions.sh
+
+tmux_attach () {
+    local session=${1:-mytmux}
+
+    tmux has-session -t $session
+    if [ $? != 0 ]; then
+        tmux new-session -n "home" -s $session -c $HOME -d
+        tmux send-keys -t ${session} 'clear' C-m
+
+        # split mytmux
+        tmux split-window -v -p 70 -t $session -c $HOME
+        tmux send-keys -t $session:1.2 'clear' C-m
+
+        # 2nd window neomutt
+        tmux new-window -n "neomutt" -t $session -c "$HOME/Desktop"
+        tmux send-keys -t $session:2 'neomutt' C-m
+
+        # default window
+        tmux select-window -t $session:1.2
+    fi
+    tmux attach -t $session
+}
+
+
+[[ `id -u` = 0 ]] && die "Must not be root; aborting"
+
+tmux_attach $@
+
+# vim:fenc=utf-8:ft=sh:
