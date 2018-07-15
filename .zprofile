@@ -1,13 +1,10 @@
-#
-# $Header: ${HOME}/.zprofile                            Exp $
-#
+# $Id: ~/.zprofile
 
-if [[ -f ~/.Xprofile ]] { source ~/.Xprofile }
+#if [[ -f ~/.profile ]] { source ~/.profile }
 
-for sh (/etc/profile.d/*.sh)
-	if [[ -r ${sh} ]] { source ${sh} }
-unset sh
+#for sh (/etc/profile.d/*.sh)
+#	if [[ -r ${sh} ]] { source ${sh} }
+#unset sh
 
-#
-# vim:fenc=utf-8:ci:pi:sts=0:sw=2:ts=2:
-#
+# vim:fenc=utf-8:ts=0:sts=2:sw=2:
+
