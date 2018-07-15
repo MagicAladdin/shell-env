@@ -28,6 +28,8 @@ export GOTMP=/tmp
 
 export GHQ_ROOT=$HOME/repos
 
+export NODE_PATH=$HOME/.node_modules
+
 export KERNEL_DIR=/usr/src/linux
 export KBUILD_OUTPUT=/usr/src/kbuild
 

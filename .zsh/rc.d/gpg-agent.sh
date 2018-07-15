@@ -2,17 +2,17 @@
 # Init gpg-agent for ssh
 #
 
-(( ! $+commands[gpg-agent] )) || return
+#(( $+commands[gpg-agent] )) || return
 
 export GPG_TTY=$(tty)
 
 unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-    export SSH_AUTH_SOCK"$(gpgconf --list-dirs agent-ssh-socket)"
+    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
 function _gpg-agent-update-tty {
-  gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
+  gpg-connect-agent updatestartuptty /bye >/dev/null
 }
 
 autoload -Uz add-zsh-hook
