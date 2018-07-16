@@ -33,6 +33,8 @@ export NODE_PATH=$HOME/.node_modules
 export KERNEL_DIR=/usr/src/linux
 export KBUILD_OUTPUT=/usr/src/kbuild
 
+export PASSWORD_STORE_ENABLE_EXTENSIONS=true
+
 pathmunge $GOPATH/bin
 [[ -d "$HOME/.cask/bin" ]]  && pathmunge $HOME/.cask/bin
 [[ -d "$HOME/.local/bin" ]] && pathmunge $HOME/.local/bin
