@@ -11,7 +11,7 @@ zmodload zsh/terminfo
 
 have_term () {
 	local i
-	for i (${HOME}/.terminfo /usr/{share,lib}/terminfo /etc/terminfo)
+	for i (${HOME}/.terminfo /usr/{.local/,}{,share,lib}/terminfo /etc/terminfo)
         if [[ -n $i || -d $i ]] && [[ -r $i/${1:0:1}/$1 || -r $i/$1 ]] { return 0; }
 
     unset i

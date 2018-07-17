@@ -20,13 +20,13 @@ export ZDOTDIR=${ZDOTDIR:-$HOME}
 
 setopt EXTENDED_GLOB
 
-# {{{ Prevent duplicates in path variables
+# {{{ path / manpath
 
 typeset -U PATH path
 export PATH
 
 path=(
-    ~/{.local/,go/,.cask/}bin
+    ~/{.local/,.go/,.cargo/,.cask/}bin
     $path
     )
 

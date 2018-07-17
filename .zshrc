@@ -36,7 +36,7 @@ infopath=(
 typeset -U manpath
 manpath=(
     $ZDOTDIR/share/man/(N)
-    /usr/local/share/man(N)
+    /usr/{,local/,}share/man(N)
     $manpath[@]
     )
 

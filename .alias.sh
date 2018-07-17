@@ -20,6 +20,13 @@ alias j='jobs -l'
 
 alias mkcd='mkdir $1 && cd $1'
 
+alias dt="cd ${XDG_DESKTOP_DIR:-$HOME/Desktop}"
+alias dl="cd ${XDG_DOWNLOAD_DIR:-$HOME/Downloads}"
+alias doc="cd $XDG_DOCUMENTS_DIR:-$HOME/Documents}"
+alias pic="cd ${XDG_PICTURES_DIR:-$HOME/Pictures}"
+alias temp="cd ${XDG_TEMPLATES_DIR:-$HOME/templates}"
+alias pub="cd ${XDG_PUBLICSHARE_DIR:-$HOME/public}" 
+
 alias cls=clear
 alias res='cd && reset'
 
@@ -103,11 +110,4 @@ ssh () {
 alias tma='tmux attach'
 alias tmls='tmux list-sessions'
 alias tmks='tmux kill-session -t'
-tmux_killall_sessions () {
-    local sessions=$(tmux list-sessions | awk -F ':' '{print $1}')
-    [[ -z "$sessions" ]] && return
-    for session in $sessions; do
-        tmux kill-session -t $session
-    done
-}
-alias tmka=tmux_killall_sessions
+alias tmka="tmux list-sessions | awk -F':' '{print $1}' | xargs -n 1 tmux kill-session -t"

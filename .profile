@@ -23,7 +23,7 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 
-export GOPATH=${GOPATH:-~/go}
+export GOPATH=${GOPATH:-~/.go}
 export GOTMP=/tmp
 
 export GHQ_ROOT=$HOME/repos
@@ -33,9 +33,15 @@ export NODE_PATH=$HOME/.node_modules
 export KERNEL_DIR=/usr/src/linux
 export KBUILD_OUTPUT=/usr/src/kbuild
 
+export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
+export NO_AT_BRIDGE=1
+export QT_STYLE_OVERRIDE="GTK+"
+export LPASS_AGENT_TIMEOUT=0
+export LPASS_DISABLE_PINENTRY=1
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 
-pathmunge $GOPATH/bin
+[[ -d "$GOPATH/bin" ]]      && pathmunge $GOPATH/bin
+[[ -d "$HOME/.rust/bin" ]]  && pathmunge $HOME/.rust/bin
 [[ -d "$HOME/.cask/bin" ]]  && pathmunge $HOME/.cask/bin
 [[ -d "$HOME/.local/bin" ]] && pathmunge $HOME/.local/bin
 [[ -d "$HOME/bin" ]]        && pathmunge $HOME/bin
