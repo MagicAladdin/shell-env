@@ -1,8 +1,8 @@
 #
-# Node version manager
+# Node.js Version Manager (NVM)
 #
 
-export NVM_DIR=$HOME/.nvm
+export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
 
 [[ -s "$NVM_DIR/nvm.sh" ]] && source $NVM_DIR/nvm.sh
 

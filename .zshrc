@@ -54,3 +54,5 @@ eval "$(direnv hook zsh)"
 # }}}
 
 # vim:fenc=utf-8:ft=zsh:ts=4:sts=4:sw=4:et:fdm=marker:foldlevel=0:
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

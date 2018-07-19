@@ -46,3 +46,5 @@ export __bp_enable_subshells="true"
 # }}}
 
 # vim:fenc=utf-8:ft=sh:ts=4:sts=4:sw=4:et:fdm=marker:foldlevel=0:
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
