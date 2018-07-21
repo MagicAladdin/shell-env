@@ -33,4 +33,8 @@ esac
 # Restore tty settings at every prompt:
 ttyctl -f
 
+{ infocmp -x screen-256color; printf '\t%s\n' 'ncv@,'; } > /tmp/t && tic -x /tmp/t
+
+{ infocmp -x linux; printf '\t%s\n' 'ncv@,'; } > /tmp/t && tic -x /tmp/t
+
 # vim:fenc=utf-8:ft=zsh:

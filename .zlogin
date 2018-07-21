@@ -15,7 +15,7 @@ start_ssh_agent () {
     unset envfile
 }
 
-start_ssh_agent
+#start_ssh_agent
 
 # vim:fenc=utf-8:ts=2:sts=2:sw=2:et:ci:pi:
 # -*- mode: zsh -*-

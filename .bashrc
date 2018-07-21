@@ -33,18 +33,17 @@ unset f
 
 # }}}
 
-# {{{ Init direnv hooks
+# {{{ Init Direnv chdir hooks
 
-eval "$(direnv hook bash)"
+eval $(direnv hook bash)
 
-# }}}
+# }}}k
 
-# {{{ preexec subshells
+# {{{ Preexec subshells
 
 export __bp_enable_subshells="true"
 
 # }}}
 
-# vim:fenc=utf-8:ft=sh:ts=4:sts=4:sw=4:et:fdm=marker:foldlevel=0:
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0:
+# -*- mode: sh -*-

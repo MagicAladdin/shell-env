@@ -85,27 +85,8 @@ alias gRh='git reset --hard'
 alias gRhh='git reset HEAD --hard'
 alias gst='git status'
 
-# Change to the root directory (toplevel) of the git repository
-function gcd {
-    cd $(git rev-parse --show-toplevel)
-}
-
-ssh () {
-    case "$TERM" in
-    (rxvt-256color|rxvt-unicode*)
-        TERM=rxvt LANG=C LC_MESSAGES=C command ssh "$@"
-        ;;
-    (screen-256color|tmux-256color)
-        TERM=screen LANG=C LC_MESSAGES=C command ssh "$@"
-        ;;
-    (xterm-256color)
-        TERM=xterm LANG=C LC_MESSAGES=C command ssh "$@"
-        ;;
-    (*)
-        LANG=C LC_MESSAGES=C command ssh "$@"
-        ;;
-    esac
-}
+# Change dir to root of git repo
+function gcd { cd $(git rev-parse --show-toplevel); }
 
 alias tma='tmux attach'
 alias tmls='tmux list-sessions'

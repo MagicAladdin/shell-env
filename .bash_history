@@ -7368,3 +7368,151 @@ chsh -s /bin/zsh
 sudo su
 #1531491452
 startx
+#1532144136
+source /etc/init.d/functions.sh 
+#1532144139
+dir
+#1532144141
+die
+#1532144149
+eerror "foo"
+#1532144157
+vi /etc/init.d/functions.sh 
+#1532144194
+cd
+#1532144195
+ls li
+#1532144197
+cd lib
+#1532144199
+cd lib
+#1532144201
+ll
+#1532144209
+vi functions
+#1532144217
+vi functions.sh 
+#1532144235
+mv functions.sh func
+#1532144245
+mv functions functions.sh
+#1532144246
+ll
+#1532144250
+mv func functions
+#1532144251
+ll
+#1532144256
+cd
+#1532144265
+cd repos/github.com/tokiclover/dotfiles/bin/
+#1532144270
+vi bhp.bash 
+#1532144563
+cd
+#1532144573
+cd repos/github.com/tokiclover/mkinitramfs-ll/
+#1532144574
+ls
+#1532144583
+ls usr/
+#1532144586
+ls usr/lib/
+#1532144588
+ls usr/lib/mkinitramfs-ll/
+#1532144600
+cp usr/lib/mkinitramfs-ll/functions ~
+#1532144601
+cd
+#1532144601
+ls
+#1532144602
+vi functions 
+#1532144648
+cd
+#1532171434
+vi /etc/tmux.conf 
+#1532171990
+ghq get keeganlow/dotfiles
+#1532172127
+echo $BASH_SOURCE
+#1532172290
+vi .bash_profile 
+#1532172302
+vi .bashrc 
+#1532172342
+vi .bashrc 
+#1532172350
+vi .bashrc 
+#1532172365
+vi .bashrc 
+#1532172471
+cd .nvim
+#1532172471
+ls
+#1532172474
+cd nvimrc.d/
+#1532172475
+ls
+#1532172477
+vi filetypes.vim 
+#1532172505
+vi ~/.bashrc 
+#1532172514
+vi ~/.bashrc 
+#1532172600
+cd android/
+#1532172604
+ll
+#1532172611
+vi .envrc 
+#1532172658
+direnv allow
+#1532172700
+ssh-add -l
+#1532172703
+ssh rpi
+#1532172713
+ssh git@rpi
+#1532172750
+ssh-copy-id -i ../.ssh/id_wandsas.pub git@rpi
+#1532172760
+cd
+#1532172761
+cd .ssh/
+#1532172762
+vi config 
+#1532172799
+ll 
+#1532172803
+vi config 
+#1532173624
+cd
+#1532173627
+ll .ssh/
+#1532173631
+vi .ssh/config 
+#1532173658
+ssh rpi
+#1532173661
+ll .ssh/
+#1532173666
+ssh-add -l
+#1532173673
+vi .ssh/config 
+#1532173681
+ssh wrpi
+#1532173685
+ll .ssh/
+#1532173690
+vi .ssh/config 
+#1532173703
+ssh rpi
+#1532173713
+ssh wrpi
+#1532173721
+ll .ssh/
+#1532173729
+ssh wrpi
+#1532173919
+vi .alias.sh 

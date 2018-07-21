@@ -2,7 +2,7 @@
 # Init gpg-agent for ssh
 #
 
-#(( $+commands[gpg-agent] )) || return
+(( $+commands[gpg-agent] )) || return
 
 export GPG_TTY=$(tty)
 
@@ -12,7 +12,7 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
 fi
 
 function _gpg-agent-update-tty {
-  gpg-connect-agent updatestartuptty /bye >/dev/null
+    gpg-connect-agent updatestartuptty /bye >/dev/null
 }
 
 autoload -Uz add-zsh-hook
