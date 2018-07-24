@@ -1,5 +1,12 @@
 # $Id: ~/.bashrc wandsas 2018/07/13
 
+# {{{ Bash options
+
+shopt -qs extglob
+shopt -qs nullglob
+
+# }}}
+
 # {{{ Source system bashrc
 
 [[ -f "/etc/bash/bashrc" ]] && source /etc/bash/bashrc
@@ -46,4 +53,5 @@ export __bp_enable_subshells="true"
 # }}}
 
 # vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0:
+
 # -*- mode: sh -*-

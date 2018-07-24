@@ -29,7 +29,7 @@ setopt AUTO_LIST            # automatically list choices on ambiguous completion
 setopt AUTO_PARAM_SLASH     # if completed parameter is a directory, add a trailing slash
 setopt NO_MENU_COMPLETE     # do not autoselect the first completion entry
 setopt NO_FLOW_CONTROL      # disable start/stop characters in shell editor
-
+setopt CORRECT              # smart completion correction
 
 # Completion caching
 zstyle ':completion:*'              use-cache  yes
@@ -175,8 +175,6 @@ function _force_rehash () {
 #
 # Smart completion correction
 #
-
-setopt CORRECT
 
 zstyle -e ':completion:*' completer '
 if [[ $_last_try != "$HISTNO$BUFFER$CURSOR" ]] ; then

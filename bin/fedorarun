@@ -1,0 +1,2 @@
+#!/bin/sh
+docker run --hostname fedora --name fedor --rm -ti fedora:latest bash

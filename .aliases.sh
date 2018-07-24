@@ -60,7 +60,9 @@ alias qx=qxpak
 
 check_com hub && alias git=hub
 alias gaa='git add --all'
-alias gc='git commit --verbos --all'
+alias gbsu='git branch --set-upstream-to='
+alias gbsuom='git branch --set-upstream-to=origin/master master'
+alias gc='git commit --verbose --all'
 alias gcm='git commit --message'
 alias gpl='git pull'
 alias gplr='git pull --rebase'
@@ -92,3 +94,5 @@ alias tma='tmux attach'
 alias tmls='tmux list-sessions'
 alias tmks='tmux kill-session -t'
 alias tmka="tmux list-sessions | awk -F':' '{print $1}' | xargs -n 1 tmux kill-session -t"
+
+# vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=2:et:

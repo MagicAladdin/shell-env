@@ -28,14 +28,17 @@ export GOTMP=/tmp
 
 export GHQ_ROOT=$HOME/repos
 
-export NODE_PATH=$HOME/.node_modules
+export PYTHONPATH=$HOME/.local/lib64/python3.6/site-packages:$PYTHONPATH
+
+export NODE_PATH=${XDG_CONFIG_HOME:-$HOME/.config}/node_modules
 
 export KERNEL_DIR=/usr/src/linux
 export KBUILD_OUTPUT=/usr/src/kbuild
 
-export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
-export NO_AT_BRIDGE=1
+export GTK2_RC_FILES=${XDG_CONFIG_HOME:-$HOME/.config}/gtk-2.0/gtkrc
 export QT_STYLE_OVERRIDE="GTK+"
+export NO_AT_BRIDGE=1
+
 export LPASS_AGENT_TIMEOUT=0
 export LPASS_DISABLE_PINENTRY=1
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
@@ -46,7 +49,7 @@ export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 [[ -d "$HOME/.local/bin" ]] && pathmunge $HOME/.local/bin
 [[ -d "$HOME/bin" ]]        && pathmunge $HOME/bin
 
-for f in $HOME/.profile.d/*.sh $HOME/.alias.sh; do
+for f in $HOME/.profile.d/*.sh $HOME/.aliases.sh; do
     [[ -r "$f" ]] && source $f
 done
 unset f

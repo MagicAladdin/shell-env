@@ -53,6 +53,11 @@ zshrc_bindkey() {
 	done
 }
 
+# Skip network
+typeset -gA FAST_BLIST_PATTERNS
+FAST_BLIST_PATTERNS[/mount/nfs1/*]=1
+FAST_BLIST_PATTERNS[/mount/disk2/*]=1
+
 # Activate syntax highlighting
 # https://github.com/zdharma/fast-syntax-highlighting/
 #
@@ -89,6 +94,7 @@ zshrc_zsh_syntax_highlighting() {
 		ZSH_HIGHLIGHT_STYLES ZSH_HIGHLIGHT_MATCHING_BRACKETS_STYLES
 	:
 }
+
 zshrc_highlight_styles() {
 	local -a brackets
 	local -A styles
@@ -228,12 +234,14 @@ zshrc_highlight_styles() {
 	fi
 }
 
+
 if [[ -z "${ZSHRC_SKIP_SYNTAX_HIGHLIGHTING:++}" ]] && is-at-least 4.3.9
 then	if [[ -n "${ZSHRC_PREFER_ZSH_SYNTAX_HIGHLIGHTING:++}" ]]
 	then	zshrc_zsh_syntax_highlighting || zshrc_fast_syntax_highlighting
 	else	zshrc_fast_syntax_highlighting || zshrc_zsh_syntax_highlighting
 	fi
 fi
+
 
 # Activate autosuggestions and/or incremental completion from one of
 # https://github.com/zsh-users/zsh-autosuggestions/
@@ -284,73 +292,14 @@ zshrc_autosuggestions() {
 	fi
 }
 
-zshrc_auto_fu_load() {
-	: # Status must be 0 before sourcing auto-fu.zsh
-	. auto-fu NIL && auto-fu-install && return
-	:
-	. auto-fu.zsh NIL
-}
-zshrc_auto_fu() {
-	(($+functions[auto-fu-init])) || path=(
-		${DEFAULTS:+${^DEFAULTS%/}{,/zsh}{/auto-fu{.zsh,},}}
-		${GITS:+${^GITS%/}{/auto-fu{.zsh,}{.git,},}}
-		${EPREFIX:+${^EPREFIX%/}/usr/share/zsh/site-contrib{/auto-fu{.zsh,},}}
-		/usr/share/zsh/site-contrib{/auto-fu{.zsh,},}
-		$path
-	) zshrc_auto_fu_load || return
-	unset ZSHRC_AUTO_ACCEPT
-	# auto-fu.zsh gives confusing messages with warn_create_global:
-	setopt no_warn_create_global
-	# Keep Ctrl-d behavior also when auto-fu is active
-	afu+orf-ignoreeof-deletechar-list() {
-	afu-eof-maybe afu-ignore-eof zle kill-line-maybe
-}
-	afu+orf-exit-deletechar-list() {
-	afu-eof-maybe exit zle kill-line-maybe
-}
-	zstyle ':auto-fu:highlight' input
-	zstyle ':auto-fu:highlight' completion fg=yellow
-	zstyle ':auto-fu:highlight' completion/one fg=green
-	zstyle ':auto-fu:var' postdisplay # $'\n-azfu-'
-	zstyle ':auto-fu:var' track-keymap-skip opp
-	zstyle ':auto-fu:var' enable all
-	zstyle ':auto-fu:var' disable magic-space
-	if (($+functions[init-transmit-mode]))
-	then	zle-line-init() {
-	init-transmit-mode
-	auto-fu-init
-}
-		zle -N zle-line-init
-	else	zle -N zle-line-init auto-fu-init
-	fi
-	zle -N zle-keymap-select auto-fu-zle-keymap-select
-	zstyle ':completion:*' completer _complete
-
-	# Starting a line with a space or tab or quoting the first word
-	# or escaping a word should deactivate auto-fu for that line/word.
-	# This is useful e.g. if auto-fu is too slow for you in some cases.
-	zstyle ':auto-fu:var' autoable-function/skiplines '[[:blank:]\\"'\'']*'
-	zstyle ':auto-fu:var' autoable-function/skipwords '[\\]*'
-
-	# Unfortunately, auto-fu is always too slow for portage or eix.
-	# Therefore, we disable package completion with auto-fu:
-	zstyle ':completion:*:*:eix*:*' tag-order options dummy - '!packages'
-	zstyle ':completion:*:*:emerge:argument-rest*' tag-order values available_sets -
-}
-
 if [[ -z "${ZSHRC_SKIP_AUTO:++}" ]]
-then	if [[ -n "${ZSHRC_PREFER_AUTO_FU:++}" ]]
-	then	zshrc_auto_fu || zshrc_autosuggestions
-	elif [[ -z "${ZSHRC_USE_AUTO_FU}" ]]
-	then	zshrc_autosuggestions || zshrc_auto_fu
-	else	zshrc_auto_fu
-		zshrc_autosuggestions
-	fi
+then    zshrc_autosuggestions
 fi
 
 # Free unused memory unless the user explicitly sets ZSHRC_KEEP_FUNCTIONS
-[[ -z "${ZSHRC_KEEP_FUNCTIONS:++}" ]] || unfunction \
-	zshrc_bindkey zshrc_highlight_styles \
-	zshrc_fast_syntax_highlighting zshrc_autosuggestions
+if [[ -n "${ZSHRC_KEEP_FUNCTIONS:++}" ]]
+then    unfunction zshrc_bindkey zshrc_highlight_styles \
+	    zshrc_fast_syntax_highlighting zshrc_autosuggestions
+fi
 
-# vim:fenc=utf-8:ft=zsh:
+# vim:fenc=utf-8:ft=zsh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0

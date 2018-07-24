@@ -4,19 +4,15 @@
 
 # {{{ Configure ZSH features
 
-ZPLUGIN=
+# Empty means disabled and not empty means loading the feature
 
-ZMORPHO=y
+ZSH_SKIP_ZMORPHO=y
 
-FAST_SYNTAX_HIGHLIGHTING=y
+ZSH_SKIP_HISTORY_SEARCH_MULTI_WORD=y
 
-HISTORY_SEARCH_MULTI_WORD=y
+ZSH_SKIP_FAST_SYNTAX_HIGHLIGHTING=y
 
-ZSH_SYNTAX_HIGHLIGHTING=
-
-AUTO_FU=
-
-ZSH_AUTOSUGGESTIONS=y
+ZSH_SKIP_AUTOSUGGESTIONS=y
 
 # }}}
 
@@ -42,17 +38,17 @@ manpath=(
 
 # }}}
 
-# {{{ Running hooks
+# {{{ Running zsh hooks
 
 for f ($HOME/.zsh/rc.d/*.sh)
     [[ -r "$f" ]] && source $f
 
 unset f
 
+# {{{ Init Direnv chdir hooks
+
 eval "$(direnv hook zsh)"
 
 # }}}
 
 # vim:fenc=utf-8:ft=zsh:ts=4:sts=4:sw=4:et:fdm=marker:foldlevel=0:
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
