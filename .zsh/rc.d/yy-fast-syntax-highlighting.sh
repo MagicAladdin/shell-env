@@ -1,67 +1,16 @@
-#
-# Zsh Morpho screen savers
-#
-# https://github.com/psprint/zsh-morpho/
-
-#zstyle ":morpho" screen-saver "zmandelbrot"
-#zstyle ":morpho" arguments "-s"
-#zstyle ":morpho" delay "290"
-#zstyle ":morpho" arguments "-s"
-#zstyle ":morpho" delay "290"
-#zstyle ":morpho" check-interval "60"
-
-#morpho="/usr/share/zsh/site-contib/zsh-morpho"
-
-#[[ -r "$morpho/zsh-morpho.plugin.zsh" ]] && {
-#    source $morpo/zsh-morpho.plugin.zsh
-#}
-
-# History search multi word
-# https://github.com/zdharma/fast/syntax-highlighting/
-
-#zstyle ":history-search-multi-word" page-size "5"
-#zstyle ":plugin:history-search-multi-word" clear-on-cancel "yes"
-
-#hsmw="/usr/share/zsh/site-contrib/history-search-multi-word"
-
-#[[ -r "$hsmw/history-search-multi-word.plugin.zsh" ]] && {
-#    source $hsmw/history-search-multi-word.plugin.zsh
-#}
-
-# Wrapper function for bindkey: multiple keys, $'$...' refers to terminfo;
-# - means -M menuselect
-
-zshrc_bindkey() {
-	local b c
-	local -a a
-	if [[ ${1-} == - ]]
-	then	a=(-M menuselect)
-		shift
-	else	a=()
-	fi
-	b=$1
-	shift
-	while [[ $# -gt 0 ]]
-	do	case $1 in
-		(*[^-a-zA-Z0-9_]*)
-			[[ -z ${key[(re)$1]:++} ]] && c=$1 || c=;;
-		(*)
-			c=${key[$1]};;
-		esac
-		[[ -z $c ]] || bindkey $a $c $b
-		shift
-	done
-}
-
-# Skip network
-typeset -gA FAST_BLIST_PATTERNS
-FAST_BLIST_PATTERNS[/mount/nfs1/*]=1
-FAST_BLIST_PATTERNS[/mount/disk2/*]=1
-
 # Activate syntax highlighting
 # https://github.com/zdharma/fast-syntax-highlighting/
 #
 # Set colors according to a 256 color scheme if supported.
+
+
+# Hash holding paths that shouldn't be grepped (globbed)
+typeset -gA FAST_BLIST_PATTERNS
+FAST_BLIST_PATTERNS[/public/*]=1
+
+# Async path checking
+# useful on slow networks, or when there are many files in a directory.
+#FAST_HIGHLIGHT[use_async]=1
 
 zshrc_fast_syntax_highlighting() {
 	(($+FAST_HIGHLIGHT_STYLES)) || path=(
@@ -72,26 +21,6 @@ zshrc_fast_syntax_highlighting() {
 		$path
 	) . fast-syntax-highlighting.plugin.zsh NIL || return
 	#zshrc_highlight_styles FAST_HIGHLIGHT_STYLES
-	:
-}
-zshrc_zsh_syntax_highlighting() {
-	(($+ZSH_HIGHLIGHT_HIGHLIGHTERS)) || path=(
-		${DEFAULTS:+${^DEFAULTS%/}{,/zsh}{/zsh-syntax-highlighting,}}
-		${GITS:+${^GITS%/}{/zsh-syntax-highlighting{.git,},}}
-		${EXPREFIX:+${^EPREFIX%/}/usr/share/zsh/site-contrib{/zsh-syntax-highlighting,}}
-		/usr/share/zsh/site-contrib{/zsh-syntax-highlighting,}
-		$path
-	) . zsh-syntax-highlighting.zsh NIL || return
-	typeset -gUa ZSH_HIGHLIGHT_HIGHLIGHTERS
-	ZSH_HIGHLIGHT_HIGHLIGHTERS=(
-		main		# color syntax while typing (active by default)
-#		patterns	# color according to ZSH_HIGHLIGHT_PATTERNS
-		brackets	# color matching () {} [] pairs
-#		cursor		# color cursor; useless with cursorColor
-#		root		# color if you are root; broken in some versions
-	)
-	zshrc_highlight_styles \
-		ZSH_HIGHLIGHT_STYLES ZSH_HIGHLIGHT_MATCHING_BRACKETS_STYLES
 	:
 }
 
@@ -234,72 +163,13 @@ zshrc_highlight_styles() {
 	fi
 }
 
-
-if [[ -z "${ZSHRC_SKIP_SYNTAX_HIGHLIGHTING:++}" ]] && is-at-least 4.3.9
-then	if [[ -n "${ZSHRC_PREFER_ZSH_SYNTAX_HIGHLIGHTING:++}" ]]
-	then	zshrc_zsh_syntax_highlighting || zshrc_fast_syntax_highlighting
-	else	zshrc_fast_syntax_highlighting || zshrc_zsh_syntax_highlighting
-	fi
-fi
-
-
-# Activate autosuggestions and/or incremental completion from one of
-# https://github.com/zsh-users/zsh-autosuggestions/
-#   (at the time of writing this, branch develop supports completion)
-# https://github.com/hchbaw/auto-fu.zsh/
-#   (only branch pu works with {fast,zsh}-syntax-highlighting)
-# (prefer the latter if ZSHRC_PREFER_AUTO_FU is nonempty;
-# otherwise use both only if ZSHRC_USE_AUTO_FU is nonempty
-# skip both if ZSHRC_SKIP_AUTO is nonempty.)
-
-zshrc_autosuggestions() {
-	is-at-least 4.3.11 || return
-	(($+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE)) || \
-	path=(${DEFAULTS:+${^DEFAULTS%/}{,/zsh}{/zsh-autosuggestions,}}
-		${GITS:+${^GITS%/}{/zsh-autosuggestions{.git,},}}
-		${EXPREFIX:+${^EPREFIX%/}/usr/share/zsh/site-contrib{/zsh-autosuggestions,}}
-		/usr/share/zsh/site-contrib{/zsh-autosuggestions,}
-		$path) . zsh-autosuggestions.zsh NIL || return
-	if [[ $(echotc Co) -ge 256 ]]
-	then	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=99,bold,bg=18'
-	else	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=black,bold,bg=magenta'
-	fi
-	typeset -g ZSH_AUTOSUGGEST_USE_ASYNC=true
-	typeset -gUa  ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS \
-		ZSH_AUTOSUGGEST_ACCEPT_WIDGETS ZSH_AUTOSUGGEST_EXECUTE_WIDGETS \
-		ZSH_AUTOSUGGEST_CLEAR_WIDGETS
-	typeset -ga ZSH_AUTOSUGGEST_STRATEGY
-	ZSH_AUTOSUGGEST_STRATEGY=(completion history)
-	ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(${(@)ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#*forward-char})
-	ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(forward-char vi-forward-char)
-	autosuggest-self-insert-clear() {
-		zle self-insert
-		_zsh_autosuggest_clear
-	}
-	zle -N autosuggest-self-insert-clear
-	zshrc_bindkey autosuggest-self-insert-clear "#"
-	if [[ -z "${ZSHRC_AUTO_ACCEPT:++}" ]]
-	then	if [[ $(echotc Co) -ge 256 ]]
-		then	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=136,bg=235'
-		else	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=black,bold,bg=magenta'
-		fi
-	else	if [[ $(echotc Co) -ge 256 ]]
-		then	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=99,bold'
-		else	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=246,bold'
-		fi
-		zle -N autosuggest-accept-line _zsh_autosuggest_execute
-		zshrc_bindkey autosuggest-accept-line "^M"
-	fi
-}
-
-if [[ -z "${ZSHRC_SKIP_AUTO:++}" ]]
-then    zshrc_autosuggestions
+if [[ -z "${ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING:++}" ]] && is-at-least 4.3.9
+then  zshrc_fast_syntax_highlighting
 fi
 
 # Free unused memory unless the user explicitly sets ZSHRC_KEEP_FUNCTIONS
 if [[ -n "${ZSHRC_KEEP_FUNCTIONS:++}" ]]
-then    unfunction zshrc_bindkey zshrc_highlight_styles \
-	    zshrc_fast_syntax_highlighting zshrc_autosuggestions
+then    unfunction zshrc_highlight_styles zshrc_fast_syntax_highlighting
 fi
 
 # vim:fenc=utf-8:ft=zsh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0
