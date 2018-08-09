@@ -4,7 +4,7 @@
 # https://github.com/psprint/zsh-morpho/
 
 zshrc_morpho () {
-  local basedir="/usr/share/zsh/site-contib/zsh-morpho"
+  local basedir="/usr/share/zsh/site-contrib/zsh-morpho"
   local morphorc="zsh-morpho.plugin.zsh"
 
   [[ -r "${basedir}/${morphorc}" ]] && source ${basedir}/${morphorc} || return
