@@ -4,14 +4,18 @@
 
 # {{{ Configure ZSH features
 
-# Empty means disabled and not empty means loading the feature
+# Empty means loading the feature
 
+# 1. https://github.com/psprint/zsh-morpho
 ZSHRC_SKIP_ZMORPHO=
 
+# 2. https://github.com/zdharma/history-search-multi-word
 ZSHRC_SKIP_HISTORY_SEARCH_MULTI_WORD=
 
+# 3. https://github.com/zdharma/fast-syntax-highlighting
 ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING=
 
+# 4. https://github.com/zsh-users/zsh-autosuggestions
 ZSHRC_SKIP_AUTOSUGGESTIONS=
 
 ZSHRC_KEEP_FUNCTIONS=
