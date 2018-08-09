@@ -22,7 +22,6 @@ pathmunge () {
 # http://getgb.io/
 # https://golang.github.io/dep/
 #
-
 layout_golang() {
   export GOPATH="$PWD/vendor:$PWD"
   PATH_add "$PWD/vendor/bin"
