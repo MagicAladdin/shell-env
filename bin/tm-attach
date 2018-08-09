@@ -1,7 +1,5 @@
 #!/bin/bash
 
-[[ -f "/etc/init.d/functions.sh" ]] && source /etc/init.d/functions.sh
-
 tmux_attach () {
     local session=${1:-mytmux}
 
@@ -25,7 +23,7 @@ tmux_attach () {
 }
 
 
-[[ `id -u` = 0 ]] && die "Must not be root; aborting"
+[[ `id -u` = 0 ]] && die "Must not be root; abort"
 
 tmux_attach $@
 

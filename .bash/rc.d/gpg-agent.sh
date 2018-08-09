@@ -1,5 +1,5 @@
 #
-# Init gpg-agent for ssh
+# Init gpg-agent for ssh support
 #
 
 check_com gpg-agent || return

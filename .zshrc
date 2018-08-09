@@ -6,13 +6,15 @@
 
 # Empty means disabled and not empty means loading the feature
 
-ZSHRC_SKIP_MORPHO=
+ZSH_SKIP_ZMORPHO=y
 
-ZSHRC_SKIP_HISTORY_SEARCH_MULTI_WORD=
+ZSH_SKIP_HISTORY_SEARCH_MULTI_WORD=y
+
+ZSH_SKIP_FAST_SYNTAX_HIGHLIGHTING=y
 
 ZSHRC_SKIP_AUTOSUGGESTIONS=
 
-ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING=
+ZSHRC_KEEP_FUNCTIONS=
 
 # }}}
 
@@ -21,7 +23,7 @@ ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING=
 typeset -U infopath
 infopath=(
     $HOME/{share/,}info(N)
-    /usr/{.local/,}share/info/(N)
+    /usr/{local/,}share/info/(N)
     $infopath
     )
 

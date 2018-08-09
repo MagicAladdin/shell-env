@@ -42,6 +42,7 @@ export NO_AT_BRIDGE=1
 export LPASS_AGENT_TIMEOUT=0
 export LPASS_DISABLE_PINENTRY=1
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
+export SUDO_ASKPASS=/usr/bin/lxqt-openssh-askpass
 
 [[ -d "$GOPATH/bin" ]]      && pathmunge $GOPATH/bin
 [[ -d "$HOME/.rust/bin" ]]  && pathmunge $HOME/.rust/bin
