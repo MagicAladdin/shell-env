@@ -34,4 +34,9 @@ if [[ -z "${ZSHRC_SKIP_HISTORY_SEARCH_MULTI_WORD:++}" ]]
 then  zshrc_history_search_multi_word
 fi
 
+# Free unused memory unless the user explicitly sets ZSHRC_KEEP_FUNCTIONS
+if [[ -z "${ZSHRC_KEEP_FUNCTIONS:++}" ]]
+then    unfunction zshrc_history_search_multi_word
+fi
+
 # vim:fenc=utf-8:ft=zsh:ts=2:sts=0:sw=2:et:

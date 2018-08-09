@@ -77,7 +77,7 @@ then    zshrc_autosuggestions
 fi
 
 # Free unused memory unless the user explicitly sets ZSHRC_KEEP_FUNCTIONS
-if [[ -n "${ZSHRC_KEEP_FUNCTIONS:++}" ]]
+if [[ -z "${ZSHRC_KEEP_FUNCTIONS:++}" ]]
 then    unfunction zshrc_bindkey zshrc_autosuggestions
 fi
 

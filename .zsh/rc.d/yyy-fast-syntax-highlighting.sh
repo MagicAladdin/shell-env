@@ -167,8 +167,9 @@ if [[ -z "${ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING:++}" ]] && is-at-least 4.3.9
 then  zshrc_fast_syntax_highlighting
 fi
 
+#
 # Free unused memory unless the user explicitly sets ZSHRC_KEEP_FUNCTIONS
-if [[ -n "${ZSHRC_KEEP_FUNCTIONS:++}" ]]
+if [[ -z "${ZSHRC_KEEP_FUNCTIONS:++}" ]]
 then    unfunction zshrc_highlight_styles zshrc_fast_syntax_highlighting
 fi
 

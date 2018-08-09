@@ -1,5 +1,5 @@
 #
-# Zsh Morpho screen savers
+# Zsh Morpho xscreensaver
 #
 # https://github.com/psprint/zsh-morpho/
 
@@ -21,6 +21,11 @@ zshrc_morpho () {
 
 if [[ -z "${ZSHRC_SKIP_MORPHO:++}" ]]
 then  zshrc_morpho
+fi
+
+# Free unused memory unless the user explicitly sets ZSHRC_KEEP_FUNCTIONS
+if [[ -z "${ZSHRC_KEEP_FUNCTIONS:++}" ]]
+then    unfunction zshrc_morpho
 fi
 
 # vim:fenc=utf-8:ft=zsh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0
