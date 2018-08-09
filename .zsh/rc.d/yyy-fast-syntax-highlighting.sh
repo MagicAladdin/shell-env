@@ -1,4 +1,6 @@
-# Activate syntax highlighting
+# $Id: ~/.zsh/rc.d/yyy-fast-syntax-highlighting.sh wandsas 2018/08/09
+
+# Zsh fast syntax highlighting
 # https://github.com/zdharma/fast-syntax-highlighting/
 #
 # Set colors according to a 256 color scheme if supported.

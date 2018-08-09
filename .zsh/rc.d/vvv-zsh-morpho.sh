@@ -1,6 +1,6 @@
-#
-# Zsh Morpho xscreensaver
-#
+# $Id: ~/.zsh/rc.d/vvv-zsh-morpho.sh wandsas 2018/08/09
+
+# Zsh morpho xscreensaver
 # https://github.com/psprint/zsh-morpho/
 
 zshrc_morpho () {
@@ -10,9 +10,7 @@ zshrc_morpho () {
   [[ -r "${basedir}/${morphorc}" ]] && source ${basedir}/${morphorc} || return
 
   # screen-saver: zmorpho, zmandelbrot, zblank & pmorpho
-  zstyle ":morpho" screen-saver "zmandelbrot"
-  zstyle ":morpho" arguments "-s"
-  zstyle ":morpho" delay "290"
+  zstyle ":morpho" screen-saver "zmorpho"
   zstyle ":morpho" arguments "-s"
   zstyle ":morpho" delay "290"
   zstyle ":morpho" check-interval "60"

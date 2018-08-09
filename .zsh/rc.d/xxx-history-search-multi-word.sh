@@ -1,6 +1,7 @@
+# $Id: ~/.zsh/rc.d/xxx-history-search-multi-word.sh wandsas 2018/08/09
 
-# History search multi word
-# https://github.com/zdharma/fast/syntax-highlighting/
+# Zsh history search multi word
+# https://github.com/zdharma/fast/history-search-multi-word
 
 zshrc_history_search_multi_word () {
   local basedir="/usr/share/zsh/site-contrib/history-search-multi-word"

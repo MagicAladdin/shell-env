@@ -1,3 +1,4 @@
+# $Id: ~/.zsh/rc.d/gpg-agent.sh wandsas 2018/08/09
 #
 # Init gpg-agent for ssh
 #

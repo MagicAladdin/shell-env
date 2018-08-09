@@ -1,5 +1,7 @@
 # $Id: ~/.profile.d/nvm.sh wandsas 2018/07/24
-
+#
+# Node.js version manager
+#
 
 [[ -d "$HOME/.nvm/nvm.sh" ]] || return
 

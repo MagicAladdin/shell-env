@@ -1,3 +1,4 @@
+# $Id: ~/.bash/rc.d/03-bash-options.sh wandsas 2018/08/09
 #
 # Bash options
 #

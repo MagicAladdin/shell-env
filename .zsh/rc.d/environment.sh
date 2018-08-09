@@ -1,5 +1,7 @@
-
+# $Id: ~/.zsh/rc.d/environment.sh wandsas 2018/08/09
+#
 # Environment variables setup
+#
 
 NULLCMD=:
 READNULLCMD=less

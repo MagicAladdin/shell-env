@@ -1,5 +1,7 @@
+# $Id: ~/.zsh/rc.d/profiles.sh wandsas 2018/08/09
 #
-# ZSH directory based profiles
+# Zsh directory based profiles
+# https://github.com/grml/grml-etc-core
 #
 #   zstyle ':chpwd:profiles:/usr/src/grml(|/|/*)'   profile grml
 #   zstyle ':chpwd:profiles:/usr/src/debian(|/|/*)' profile debian

@@ -1,3 +1,4 @@
+# $Id: ~/.zsh/rc.d/02-set-title.sh wandsas 2018/08/09
 #
 # Activate support for title from https://github.com/vaeth/runtitle/
 #

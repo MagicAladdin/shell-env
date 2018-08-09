@@ -1,8 +1,9 @@
+# $Id: ~/.zsh/rc.d/03-zsh-options.sh wandsas 2018/08/09
 #
 # ZSH options
 #
 
-# see man zshoptions(1)
+# See man zshoptions(1)
 
 # Expansion and globbing options
 setopt EXTENDED_GLOB            # do not forget to quote '^', '~' and '#'!

@@ -1,3 +1,4 @@
+# $Id: ~/.zsh/rc.d/myprompt.sh wandsas 2018/08/09
 #
 # Wandsas zsh prompt
 #

@@ -1,3 +1,8 @@
+# $Id: ~/.zsh/rc.d/zzz-zsh-autosuggestions.sh wandsas 2018/08/09
+
+# Zsh autosuggestions
+# https://github.com/zsh-users/zsh-autosuggestions
+
 # Wrapper function for bindkey: multiple keys, $'$...' refers to terminfo;
 # - means -M menuselect
 

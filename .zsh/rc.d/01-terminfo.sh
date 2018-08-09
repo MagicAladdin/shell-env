@@ -1,3 +1,4 @@
+# $Id: ~/.zsh/rc.d/01-terminfo.sh wandsas 2018/08/09
 #
 # Setup 256 colors terminal support for rxvt-unicode and xterm
 #

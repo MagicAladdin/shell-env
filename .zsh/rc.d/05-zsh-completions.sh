@@ -1,3 +1,4 @@
+# $Id: ~/.zsh/rc.d/05-zsh-completions.sh wandsas 2018/08/09
 #
 # Zsh Completion system
 #

@@ -1,8 +1,9 @@
+# $Id: ~/.zsh/rc.d/04-zsh-modules.sh wandsas 2018/08/09
 #
-# ZSH modules
+# Zsh modules
 #
 
-# see man zshmodules
+# See man zshmodules(1)
 
 # Zsh edit small files with the command line editor
 autoload -U zed

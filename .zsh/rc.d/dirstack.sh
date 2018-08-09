@@ -1,6 +1,7 @@
+# $Id: ~/.zsh/rc.d/dirstack.sh wandsas 2018/08/09
 #
-# ZSH dirstack handling
-#
+# Zsh dirstack handling
+# https://github.com/grml/grml-etc-core
 
 DIRSTACK_FILE=${ZDOTDIR:-$HOME}/.zdirs
 DIRSTACKSIZE=20

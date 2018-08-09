@@ -1,5 +1,7 @@
+# $Id: ~/.zsh/rc.d/key-bindings.sh wandsas 2018/08/09
 #
 # Zsh key-bindings
+# https://github.com/grml/grml-etc-core
 #
 
 # Return if requirements are not available

@@ -1,4 +1,7 @@
 # $Id: ~/.profile.d/dircolors.sh wandsas 2018/07/24
+#
+# Support dircolors - color setup for ls, grep & less
+#
 
 if [[ -r "$HOME/.dir_colors" ]]; then
   eval $(dircolors -b $HOME/.dir_colors)

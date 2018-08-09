@@ -1,3 +1,4 @@
+# $Id: ~/.zsh/rc.d/history.sh wandsas 2018/08/09
 #
 # ZSH history
 #
