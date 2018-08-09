@@ -1,3 +1,4 @@
+# $Id: ~/.bash/rc.d/my-bash-prompt.sh wandsas 2018/08/09
 #
 # My extravagant bash prompt
 #
