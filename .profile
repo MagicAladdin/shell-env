@@ -9,6 +9,8 @@ case "$-" in
       (*) shell_interactive=  ;;
 esac
 
+# foobar
+
 check_com locale && {
     export LANG=en_US.UTF-8
     export LC_COLLATE=C
