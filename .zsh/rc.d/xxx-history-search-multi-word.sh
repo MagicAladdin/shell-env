@@ -4,10 +4,10 @@
 
 zshrc_history_search_multi_word () {
   local basedir="/usr/share/zsh/site-contrib/history-search-multi-word"
-  local rcfile="history-search-multi-word.plugin.zsh"
+  local hsmwrc="history-search-multi-word.plugin.zsh"
 
-  [[ -r "${basedir}/${rcfile}" ]] && \
-    source ${basedir}/${rcfile} || return
+  [[ -r "${basedir}/${hsmwrc}" ]] && \
+    source ${basedir}/${hsmwrc} || return
 
   zstyle ":history-search-multi-word" page-size "5"
   #zstyle ":history-search-multi-word" page-size "LINES/4"

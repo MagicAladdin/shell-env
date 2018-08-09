@@ -20,7 +20,6 @@ zshrc_fast_syntax_highlighting() {
 		/usr/share/zsh/site-contrib{/fast-syntax-highlighting,}
 		$path
 	) . fast-syntax-highlighting.plugin.zsh NIL || return
-	#zshrc_highlight_styles FAST_HIGHLIGHT_STYLES
 	:
 }
 
