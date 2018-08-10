@@ -2,6 +2,7 @@
 #
 # Wandsas ~/.zshenv
 
+[[ -n "$zshenv_loaded" ]] && return
 echo "$ZDOTDIR/.zshenv loaded"
 
 # {{{ ZDOTDIR
@@ -86,5 +87,7 @@ for dirname in $fpath; do
 done
 
 # }}}
+
+zshenv_loaded=y
 
 # vim:fenc=utf-8:ft=zsh:fdm=marker:foldlevel=0:

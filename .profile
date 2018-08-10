@@ -1,7 +1,6 @@
 # $Id: ~/.profile wandsas 2018/07/13
 
 [[ -n "$profile_loaded" ]] && return
-
 echo "$ZDOTDIR/.profile loaded"
 
 [[ -r "/etc/profile" ]] && source /etc/profile
