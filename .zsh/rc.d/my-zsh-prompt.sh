@@ -1,12 +1,15 @@
 # $Id: ~/.zsh/rc.d/my-zsh-prompt.sh wandsas 2018/08/09
 #
-# My zsh prompt
-#
+# My extravagant zsh prompt
 
 autoload -U promptinit && promptinit
 
-prompt wandsas2
+if [[ `id -u` = 0 ]] {
+    prompt wandsas
+} else {
+    prompt wandsas2
+}
 
-[[ -n "$SCHROOT_CHROOT_NAME" ]] && PS1="($SCHROOT_CHROOT_NAME)$PS1"
+[[ -n "$SCHROOT_CHROOT_NAME" ]] && PS1="($SCHROOT_CHROOT_NAME) $PS1"
 
 # vim:fenc=utf-8:ft=zsh:

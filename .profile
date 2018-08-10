@@ -2,14 +2,14 @@
 
 [[ -n "$profile_loaded" ]] && return
 
+echo "$ZDOTDIR/.profile loaded"
+
 [[ -r "/etc/profile" ]] && source /etc/profile
 
 case "$-" in
     (*i*) shell_interactive=y ;;
       (*) shell_interactive=  ;;
 esac
-
-# foobar
 
 check_com locale && {
     export LANG=en_US.UTF-8

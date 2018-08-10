@@ -1,6 +1,8 @@
+# $Id: ~/.zshrc wandsas 2018/08/10
 #
 # Wandsas ~/.zshrc
-#
+
+echo "$ZDOTDIR/.zshrc loaded"
 
 # {{{ Configure ZSH features
 
@@ -29,7 +31,7 @@ infopath=(
     $HOME/{share/,}info(N)
     /usr/{local/,}share/info/(N)
     $infopath
-    )
+        )
 
 # }}}
 
@@ -46,10 +48,12 @@ manpath=(
 
 # {{{ Running zsh hooks
 
-for f ($HOME/.zsh/rc.d/*.sh)
+for f ($ZDOTDIR/.zsh/rc.d/*.sh)
     [[ -r "$f" ]] && source $f
 
 unset f
+
+# }}}
 
 # {{{ Init Direnv chdir hooks
 
@@ -57,4 +61,4 @@ eval "$(direnv hook zsh)"
 
 # }}}
 
-# vim:fenc=utf-8:ft=zsh:ts=4:sts=4:sw=4:et:fdm=marker:foldlevel=0:
+# vim:fenc=utf-8:ft=zsh:fdm=marker:foldlevel=0:
