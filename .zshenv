@@ -14,6 +14,12 @@ export ZDOTDIR=${ZDOTDIR:-$HOME}
 
 # }}}
 
+# {{{ debug
+
+DEBUG=
+
+# }}}
+
 # {{{ Source user profile in bash compatibility mode
 
 [[ -r "$ZDOTDIR/.profile" ]] && () {
