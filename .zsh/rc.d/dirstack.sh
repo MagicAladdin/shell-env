@@ -3,7 +3,7 @@
 # Zsh dirstack handling
 # https://github.com/grml/grml-etc-core
 
-DIRSTACK_FILE=${ZDOTDIR:-$HOME}/.zdirs
+DIRSTACK_FILE=$HOME/.zdirs
 DIRSTACKSIZE=20
 
 if [[ -f ${DIRSTACK_FILE} ]] && [[ ${#dirstack[*]} -eq 0 ]] {

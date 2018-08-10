@@ -5,7 +5,7 @@
 autoload -U promptinit && promptinit
 
 if [[ `id -u` = 0 ]] {
-    prompt wandsas
+    prompt wandsas      # root's prompt
 } else {
     prompt wandsas2
 }

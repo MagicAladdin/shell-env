@@ -4,7 +4,7 @@
 #
 
 # set location of the history file
-HISTFILE=~/.zhistory
+HISTFILE=$HOME/.zhistory
 
 HISTSIZE=10000
 SAVEHIST=10000
