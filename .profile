@@ -52,7 +52,7 @@ export SUDO_ASKPASS=/usr/bin/lxqt-openssh-askpass
 [[ -d "$HOME/.local/bin" ]] && pathmunge $HOME/.local/bin
 [[ -d "$HOME/bin" ]]        && pathmunge $HOME/bin
 
-for f in $HOME/.profile.d/*.sh $HOME/.aliases.sh; do
+for f in $ZDOTDIR/.profile.d/*.sh; do
     [[ -r "$f" ]] && source $f
 done
 unset f

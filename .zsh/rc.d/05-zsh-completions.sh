@@ -11,11 +11,9 @@
 [[ "${TERM}" == dumb ]] && return
 
 
-# Initialize the completion system ignoring insecure directories:
-# compinit -i -d $ZDOTDIR/.zsh/zcompdump
-
+# Initialize the completion system ignoring insecure directories
 autoload -U complist
-autoload -U compinit && compinit
+autoload -U compinit && compinit -i -d $ZDOTDIR/.zcompdump
 
 
 #

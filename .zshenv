@@ -12,10 +12,10 @@ export ZDOTDIR=${ZDOTDIR:-$HOME}
 
 # {{{ Source user profile in bash compatibility mode
 
-[[ -r "$HOME/.profile" ]] && () {
+[[ -r "$ZDOTDIR/.profile" ]] && () {
     emulate -L sh
     setopt ksh_glob no_sh_glob brace_expand no_nomatch
-    source ~/.profile
+    source $ZDOTDIR/.profile
 }
 
 # }}}
@@ -28,7 +28,7 @@ typeset -U PATH path
 export PATH
 
 path=(
-    ~/{.local/,.go/,.cargo/,.cask/}bin
+    $ZDOTDIR/{.local/,.go/,.cargo/,.cask/}bin
     $path
     )
 
