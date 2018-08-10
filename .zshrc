@@ -2,7 +2,11 @@
 #
 # Wandsas ~/.zshrc
 
-echo "$ZDOTDIR/.zshrc loaded"
+# {{{ zshrc already loaded?
+
+[[ -n "$zshrc_loaded" ]] && return
+
+# }}}
 
 # {{{ Configure ZSH features
 
@@ -46,7 +50,7 @@ manpath=(
 
 # }}}
 
-# {{{ Running zsh hooks
+# {{{ Running zshrc hooks
 
 for f ($ZDOTDIR/.zsh/rc.d/*.sh)
     [[ -r "$f" ]] && source $f
@@ -58,6 +62,14 @@ unset f
 # {{{ Init Direnv chdir hooks
 
 eval "$(direnv hook zsh)"
+
+# }}}
+
+# {{{ zshrc loaded
+
+zshrc_loaded=y
+
+debug "$ZDOTDIR/.zshrc loaded"
 
 # }}}
 

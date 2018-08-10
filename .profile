@@ -1,7 +1,10 @@
 # $Id: ~/.profile wandsas 2018/07/13
 
+# {{{ profile already loaded?
+
 [[ -n "$profile_loaded" ]] && return
-echo "$ZDOTDIR/.profile loaded"
+
+# }}}
 
 [[ -r "/etc/profile" ]] && source /etc/profile
 
@@ -51,11 +54,21 @@ export SUDO_ASKPASS=/usr/bin/lxqt-openssh-askpass
 [[ -d "$HOME/.local/bin" ]] && pathmunge $HOME/.local/bin
 [[ -d "$HOME/bin" ]]        && pathmunge $HOME/bin
 
+# {{{ Running profile hooks
+
 for f in $ZDOTDIR/.profile.d/*.sh; do
     [[ -r "$f" ]] && source $f
 done
 unset f
 
+# }}}
+
+# {{{ profile loaded
+
 profile_loaded=y
+
+debug "$ZDOTDIR/.profile loaded"
+
+# }}}
 
 # vim:fenc=utf-8:ft=sh:ts=4:sts=4:sw=4:et:fdm=marker:foldlevel=0:

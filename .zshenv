@@ -2,8 +2,11 @@
 #
 # Wandsas ~/.zshenv
 
+# {{{ zshenv already loaded?
+
 [[ -n "$zshenv_loaded" ]] && return
-echo "$ZDOTDIR/.zshenv loaded"
+
+# }}}
 
 # {{{ ZDOTDIR
 
@@ -88,6 +91,12 @@ done
 
 # }}}
 
+# {{{ zshenv loaded
+
 zshenv_loaded=y
+
+debug "$ZDOTDIR/.zshenv loaded"
+
+# }}}
 
 # vim:fenc=utf-8:ft=zsh:fdm=marker:foldlevel=0:
