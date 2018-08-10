@@ -14,9 +14,9 @@ export ZDOTDIR=${ZDOTDIR:-$HOME}
 
 # }}}
 
-# {{{ debug
+# {{{ DEBUG
 
-DEBUG=
+#DEBUG=y
 
 # }}}
 

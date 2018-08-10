@@ -61,7 +61,7 @@ unset f
 
 # {{{ Init Direnv chdir hooks
 
-eval "$(direnv hook zsh)"
+#eval "$(direnv hook zsh)"
 
 # }}}
 
