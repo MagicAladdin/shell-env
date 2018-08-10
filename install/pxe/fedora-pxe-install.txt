@@ -1,0 +1,50 @@
+#!/bin/bash -xe
+
+# Mirror URL
+mirror="http://dl.fedoraproject.org/pub/fedora/linux/"
+# Releases
+[ $# -eq 0 ] && releases="22 21/Server 21-Alpha/Workstation 20/Fedora" || releases="$*"
+# Architecture: x86 | x86_64 | ...
+architectures="x86_64 i386"
+# TFTP directory path
+prefix=/tftproot
+
+test -n "$prefix"
+
+menuentry() { cat << EOF
+menuentry "Install Fedora $release $arch ($state)" {
+    linux /boot/$kernel repo=$repo
+    initrd /boot/$initrd
+}
+EOF
+}
+
+check() {
+    state="$1"
+    repo="$mirror$state/$release/$arch/os"
+
+    curl --silent --fail --head "$repo/" >/dev/null
+}
+
+download() {
+    test -e "$1" && { echo "Skipping: $1" >&2; return 0; }
+    echo "Downloading: $1 from $2" >&2
+    curl --silent --fail --output "$1" "$2"
+}
+
+grub2-mknetdir --net-directory "$prefix"
+for release in $releases; do
+    for arch in $architectures; do
+        check releases || check development || check releases/test || { echo "# Check failed for $release $arch"; break; }
+
+        kernel="fedora-$(echo "$release" | tr / -)-$arch-kernel"
+        initrd="fedora-$(echo "$release" | tr / -)-$arch-initrd"
+        pxerepo="$repo/images/pxeboot"
+
+        download "$prefix/boot/$kernel" "$pxerepo/vmlinuz" || { echo "# Couldn't download kernel for $release $arch"; break; }
+        download "$prefix/boot/$initrd" "$pxerepo/initrd.img" || { echo "# Couldn't download initrd for $release $arch"; break; }
+        menuentry
+    done
+done | tee "$prefix/boot/grub/grub.cfg"
+
+# vim:fenc=utf-8:ft=sh:
