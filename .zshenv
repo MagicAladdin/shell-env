@@ -40,6 +40,12 @@ typeset -TU PERL5LIB perl5lib
 
 # }}}
 
+# {{{ gopath
+
+export GOPATH=$ZDOTDIR/.go
+
+# }}}
+
 # {{{ pythonpath
 
 typeset -TU PYTHONPATH pythonpath

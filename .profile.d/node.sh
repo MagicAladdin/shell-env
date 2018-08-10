@@ -3,6 +3,8 @@
 # Node.js
 #
 
+[[ -d "$HOME/.npm-global" ]] || return
+
 export npm_config_prefix=$HOME/.npm-global
 
 pathmunge $HOME/.npm-global/bin
