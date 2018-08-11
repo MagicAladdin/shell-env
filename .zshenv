@@ -89,7 +89,7 @@ rubylib=(
 # {{{ fpath
 
 fpath=(
-    $ZDOTDIR/.zsh/{$ZSH_VERSION/*.zwc,functions}(N)
+    $ZDOTDIR/.[z]sh/{$ZSH_VERSION/*.zwc,functions}(N)
     $fpath
     )
 
