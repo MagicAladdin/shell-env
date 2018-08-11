@@ -32,6 +32,9 @@ export ZDOTDIR=${ZDOTDIR:-$HOME}
 
 setopt EXTENDED_GLOB
 
+# 077 would be more secure, but 022 is generally quite realistic
+umask 022
+
 # {{{ path / manpath
 
 typeset -U PATH path
