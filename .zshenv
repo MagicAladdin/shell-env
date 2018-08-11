@@ -2,6 +2,9 @@
 #
 # Wandsas ~/.zshenv
 
+# Allow disabling of entire environment suite
+[[ -n "$INHERIT_ENV" ]] && return
+
 # {{{ zshenv already loaded?
 
 [[ -n "$zshenv_loaded" ]] && return

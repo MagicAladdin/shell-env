@@ -1,23 +1,105 @@
 # $Id: ~/.profile wandsas 2018/07/13
 
-# {{{ profile already loaded?
+# Allow disabling of entire environment suite
+[[ -n "$INHERIT_ENV" ]] && return
 
 [[ -n "$profile_loaded" ]] && return
 
+# {{{ System profile
+
+#[[ -r "/etc/profile" ]] && source /etc/profile
+
 # }}}
 
-[[ -r "/etc/profile" ]] && source /etc/profile
-
-case "$-" in
-    (*i*) shell_interactive=y ;;
-      (*) shell_interactive=  ;;
-esac
+# {{{ Locales
 
 check_com locale && {
     export LANG=en_US.UTF-8
     export LC_COLLATE=C
     unset LC_ALL
 }
+
+# }}}
+
+# {{{ Are wwe interactive?
+
+case "$-" in
+    (*i*) shell_interactive=y ;;
+      (*) shell_interactive=  ;;
+esac
+
+# }}}
+
+# {{{ Loading status
+
+# Default to 1, and treat empty as 0.  This ensures we have an integer.
+: ${DEBUG_LOCAL_HOOKS=1}
+: ${DEBUG_LOCAL_HOOKS:=0}
+
+sh_load_status () {
+  # Find the name of the running shell
+  _this_shell=${shell:-${0##*/}}
+
+  # Find the filename of the running script
+  if [ -n "$BASH_SOURCE" ]; then
+    _this_script="${BASH_SOURCE[0]}"
+    # Deduct 1 because array starts at 0, and another 1 because
+    # we want to ignore this stack frame (inside sh_load_status)
+    _this_script="${BASH_SOURCE[$(( ${#BASH_SOURCE[@]} - 2))]}"
+    # Sheesh.  $ZSH_SOURCE[-2], anyone?
+  else
+    _this_script="$0"
+    # Unfortunately in zsh there seems to be no way of determining
+    # the currently running file if a function is being run, unless
+    # function_argzero is unset :-/
+    [ "$_this_script" = sh_load_status ] && _this_script=
+    [ "$_this_script" = -zsh ] && _this_script=
+  fi
+  [ -n "$_this_script" ] && _this_script="[$_this_script]"
+
+  # Leave status printed?
+
+  if [ "$DEBUG_LOCAL_HOOKS" -ge 2 ]; then
+    debug="\n"
+  fi
+
+  # \e[0K is clear to right
+  if [ -n "$shell_interactive" ] && [ "$TERM" != 'dumb' ]; then
+    _text="${_this_shell}${_this_script}: $*... "
+    _text="${_text//\/home\//~}"
+    echo -e -n "\r\e[0K$_text$debug"
+  fi
+}
+
+sh_load_status .profile
+
+# }}}
+
+# {{{ ZDOTDIR, ZDOTDIRPATH, ZDOTUSER
+
+# See .zshenv
+
+zdotdir=${ZDOTDIR:-$HOME}
+ZDOTDIR="$zdotdir"
+ZDOT_RUN_HOOKS="$ZDOTDIR/.zsh/functions/run_hooks"
+ZDOT_FIND_HOOKS="$ZDOTDIR/.zsh/functions/find_hooks"
+export ZDOTDIR ZDOT_RUN_HOOKS ZDOT_FIND_HOOKS
+
+# Define a search path to be used by run_hooks
+if [ "$ZDOTDIR" = "$HOME" ]; then
+  ZDOTDIRPATH=$ZDOTDIR
+  ZDOTDIRREVPATH=$ZDOTDIR
+else
+  OTHER_USER=1
+  export OTHER_USER
+  ZDOTDIRPATH="$ZDOTDIR $HOME"
+  ZDOTDIRREVPATH="$HOME $ZDOTDIR"
+fi
+export ZDOTDIRPATH ZDOTDIRREVPATH
+
+# }}}
+
+# {{{ Environment variables
 
 export EDITOR=nvim
 export PAGER=less
@@ -36,9 +118,6 @@ export PYTHONPATH=$HOME/.local/lib64/python3.6/site-packages:$PYTHONPATH
 
 export NODE_PATH=${XDG_CONFIG_HOME:-$HOME/.config}/node_modules
 
-export KERNEL_DIR=/usr/src/linux
-export KBUILD_OUTPUT=/usr/src/kbuild
-
 export GTK2_RC_FILES=${XDG_CONFIG_HOME:-$HOME/.config}/gtk-2.0/gtkrc
 export QT_STYLE_OVERRIDE="GTK+"
 export NO_AT_BRIDGE=1
@@ -48,17 +127,24 @@ export LPASS_DISABLE_PINENTRY=1
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 export SUDO_ASKPASS=/usr/bin/lxqt-openssh-askpass
 
+# }}}
+
+# {{{ PATH
+
 [[ -d "$GOPATH/bin" ]]      && pathmunge $GOPATH/bin
 [[ -d "$HOME/.rust/bin" ]]  && pathmunge $HOME/.rust/bin
 [[ -d "$HOME/.cask/bin" ]]  && pathmunge $HOME/.cask/bin
 [[ -d "$HOME/.local/bin" ]] && pathmunge $HOME/.local/bin
 [[ -d "$HOME/bin" ]]        && pathmunge $HOME/bin
 
+# }}}
+
 # {{{ Running profile hooks
 
 for f in $ZDOTDIR/.profile.d/*.sh; do
     [[ -r "$f" ]] && source $f
 done
+
 unset f
 
 # }}}
