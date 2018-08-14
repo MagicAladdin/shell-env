@@ -1,0 +1,39 @@
+# $Id: ~/.shared_rc wandsas 2018/08/14
+
+# Adam's shared interactive environment startup file
+#
+# $Id$
+#
+# This should get run as part of setting up the interactive
+# environment of any sh-compatible shell; hence it should be kept as
+# fast and as portable as possible.  Note that that means silly things
+# like [ ! -e foo ] rather than ! [ -e foo ] ...
+[ -n "$shared_rc_loaded" ] && return 0
+
+# {{{ Pager
+
+#export PERLDOC_PAGER='less -R'
+export PAGER='less'
+
+export LESS='-a -h100 -i -j15 -M -q -R -W -y100 -X'
+
+export LESSOPEN="|$ZDOTDIR/bin/lesspipe.sh %s"
+
+# Make sure synced with .cfg-post.d/shell-env
+export LESSKEY="$ZDOTDIR/.less"
+
+# }}}
+
+# {{{ COLUMNS
+
+# Some programs find this handy.  Unfortunately xterm gets confused
+# when launched with it set ...
+[ "${COLUMNS:-0}" -gt 0 ] && export COLUMNS
+
+# }}}
+
+. $ZDOT_RUN_HOOKS .shared_rc.d
+
+shared_rc_loaded=y
+
+# vim:fenc=utf-8:ft=sh:

@@ -1,11 +1,35 @@
 # $Id: ~/.bashrc wandsas 2018/07/13
 
-# {{{ Bash options
+# .bashrc is invoked by non-login interactive shells and by login
+# interactive shells via a hook in my .bash_profile; also when bash is
+# invoked from rshd (or similar?)
+
+# Allow disabling of all meddling with the environment
+[ -n "$INHERIT_ENV" ] && return 0
 
 shopt -qs extglob
-shopt -qs nullglob
+
+# {{{ Environment
+
+[ -r ~/.bashenv ] && . ~/.bashenv
 
 # }}}
+
+sh_load_status .bashrc
+
+# {{{ source /etc/bashrc
+
+if [ -f /etc/bashrc ]; then
+    sh_load_status '/etc/bashrc'
+    . /etc/bashrc
+else
+    [ -r $ZDOTDIR/.sysbashrc ] && . $ZDOTDIR/.sysbashrc
+fi
+
+# }}}
+
+
+
 
 # {{{ Source system bashrc
 

@@ -1,10 +1,9 @@
-# $Id: libssh.sh wandsas 2018/07/21
+# $Id: libssh.zsh wandsas 2018/07/21
+
 
 #
-# SSH helper functions
+# Copy the function to .zlogin, or source libssh in the .zlogin file.
 #
-
-# Start ssh-agent
 start_ssh_agent () {
   envfile=$TMPDIR/ssh-agent-env
   if [[ -r $envfile ]] {
@@ -19,4 +18,4 @@ start_ssh_agent () {
   unset envfile
 }
 
-# vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=2:et:
+# vim:fenc=utf-8:ft=zsh:ts=2:sts=0:sw=2:et:

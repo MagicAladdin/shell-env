@@ -1,44 +1,40 @@
 # $Id: ~/.zshenv wandsas 2018/08/10
+
+# Best viewed in emacs folding mode (folding.el).
+# (That's what all the # {{{ and # }}} are for.)
 #
-# Wandsas ~/.zshenv
+# This gets run even for non-interactive shells;
+# keep it as fast as possible.
+#
+# N.B. This is for zsh-specific environment stuff.  Put generic,
+# portable environment settings in .shared_env instead, so that they
+# take effect for bash and ksh.
 
 # Allow disabling of entire environment suite
 [[ -n "$INHERIT_ENV" ]] && return
 
-# {{{ zshenv already loaded?
-
-[[ -n "$zshenv_loaded" ]] && return
-
-# }}}
+# Stop bad system-wide scripts interfering.
+setopt NO_global_rcs
 
 # {{{ ZDOTDIR
 
-export ZDOTDIR=${ZDOTDIR:-$HOME}
+zdotdir=${ZDOTDIR:-$HOME}
+export ZDOTDIR="$zdotdir"
 
 # }}}
 
-# {{{ DEBUG
+[[ -r $zdotdir/.shared_env ]] && . $zdotdir/.shared_env
 
-#DEBUG=y
+sh_load_status '.zshenv already started before .shared_env'
 
-# }}}
-
-# {{{ Source user profile in bash compatibility mode
-
-[[ -r "$ZDOTDIR/.profile" ]] && () {
-    emulate -L sh
-    setopt ksh_glob no_sh_glob brace_expand no_nomatch
-    source $ZDOTDIR/.profile
-}
-
-# }}}
-
-setopt EXTENDED_GLOB
+setopt extended_glob
 
 # 077 would be more secure, but 022 is generally quite realistic
 umask 022
 
-# {{{ path / manpath
+sh_load_status 'search paths'
+
+# {{{ prevent duplicates in path variables
 
 typeset -U PATH path
 export PATH
@@ -56,13 +52,13 @@ typeset -TU PERL5LIB perl5lib
 
 # }}}
 
-# {{{ gopath
+# {{{ Gopath
 
 export GOPATH=$ZDOTDIR/.go
 
 # }}}
 
-# {{{ pythonpath
+# {{{ Python libraries
 
 typeset -TU PYTHONPATH pythonpath
 export PYTHONPATH
@@ -74,7 +70,7 @@ pythonpath=(
 
 # }}}
 
-# {{{ rubylib
+# {{{ Ruby libraries
 
 typeset -TU RUBYLIB rubylib
 export RUBYLIB
@@ -103,11 +99,9 @@ done
 
 # }}}
 
-# {{{ zshenv loaded
+# {{{ Running host specific hooks
 
-zshenv_loaded=y
-
-debug "$ZDOTDIR/.zshenv loaded"
+run_hooks .zsh/env.d
 
 # }}}
 

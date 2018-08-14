@@ -1,5 +1,11 @@
 # $Id: ~/.profile wandsas 2018/07/13
 
+# This should get run as part of setting up the environment
+# of any sh-compatible shell, including non-interactive ones;
+# hence it should be kept as fast and portable as possible.
+# Note that that means silly things like [ ! -e foo ] rather
+# than ! [ -e foo ] ...
+
 # Allow disabling of entire environment suite
 [[ -n "$INHERIT_ENV" ]] && return
 
@@ -7,7 +13,7 @@
 
 # {{{ System profile
 
-#[[ -r "/etc/profile" ]] && source /etc/profile
+[[ -r "/etc/profile" ]] && source /etc/profile
 
 # }}}
 
@@ -141,20 +147,12 @@ export SUDO_ASKPASS=/usr/bin/lxqt-openssh-askpass
 
 # {{{ Running profile hooks
 
-for f in $ZDOTDIR/.profile.d/*.sh; do
-    [[ -r "$f" ]] && source $f
-done
+. $ZDOT_RUN_HOOKS .shared_env
 
-unset f
+if [ -n "$shell_interactive" ]; then
+    . $ZDOTDIR/.shared_rc
+fi
 
-# }}}
-
-# {{{ profile loaded
-
-profile_loaded=y
-
-debug "$ZDOTDIR/.profile loaded"
-
-# }}}
+shared_env_loaded=y
 
 # vim:fenc=utf-8:ft=sh:ts=4:sts=4:sw=4:et:fdm=marker:foldlevel=0:
