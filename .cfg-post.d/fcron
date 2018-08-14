@@ -8,14 +8,14 @@ source "$HOME/lib/libhooks.sh"
 
 fcrontab -l > "$config"
 
-if ! rebuild_config "$config" "$confdir"; then
-    echo "ERROR: failed to rebuild $config from $confdir" >&2
-    exit 1
-fi
+#if ! rebuild_config "$config" "$confdir"; then
+#    echo "ERROR: failed to rebuild $config from $confdir" >&2
+#    exit 1
+#fi
 
-if ( echo; cat "$config" ) | fcrontab -; then
-    echo "Reinstalled user's fcrontab"
-else
-    echo "WARNING: Failed to reinstall user's fcrontab" >&2
-    exit 1
-fi
+#if ( echo; cat "$config" ) | fcrontab -; then
+#    echo "Reinstalled user's fcrontab"
+#else
+#    echo "WARNING: Failed to reinstall user's fcrontab" >&2
+#    exit 1
+#fi
