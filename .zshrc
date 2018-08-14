@@ -5,8 +5,6 @@
 # Allow disabling of entire environment suite
 [[ -n "$INHERIT_ENV" ]] && return
 
-[[ -n "$zshrc_loaded" ]] && return
-
 sh_load_status .zshrc
 
 # {{{ Configure ZSH features
