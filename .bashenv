@@ -19,7 +19,7 @@ shell=bash
 
 sh_load_status .bashenv
 
-. $ZDOT_RUN_HOOKS .bashenv.d
+. $ZDOT_RUN_HOOKS .bash/env.d
 
 : .bashenv ends # for debugging with -x
 

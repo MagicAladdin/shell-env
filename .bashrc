@@ -4,6 +4,8 @@
 # interactive shells via a hook in my .bash_profile; also when bash is
 # invoked from rshd (or similar?)
 
+: .bashrc starts # for debugging with -x
+
 # Allow disabling of all meddling with the environment
 [ -n "$INHERIT_ENV" ] && return 0
 
@@ -28,27 +30,17 @@ fi
 
 # }}}
 
-
-
-
-# {{{ Source system bashrc
-
-[[ -f "/etc/bash/bashrc" ]] && source /etc/bash/bashrc
-
-# }}}
-
-# {{{ Source user profile
-
-[[ -r "$HOME/.profile" ]] && source $HOME/.profile
-
-# }}}
-
 # {{{ Prevent PATH duplicates
 
 PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!x[$0]++' | sed "s/\(.*\).\{1\}/\1/")
 
 # }}}
 
+if which emacs >/dev/null 2>&1; then
+    e () {
+        emacs "$@" 2>&1 &
+    }
+fi
 # {{{ Are we running an interactive shell?
 
 [[ -n "$shell_interactive" ]] || return
@@ -57,14 +49,13 @@ PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!x[$0]++' | sed "s/\(.*\).\{1\}/\1/
 
 # {{{ Running bash hooks
 
-for f in ~/.bash/{functions,rc.d}/*.sh; do
-    [[ -r "$f" ]] && source $f
-done
-unset f
+. $ZDOT_RUN_HOOKS .bash/rc.d
+
+: .bashrc ends # for debugging with -x
 
 # }}}
 
-# {{{ Init Direnv chdir hooks
+# {{{ Init Direnv hook
 
 eval $(direnv hook bash)
 

@@ -12,7 +12,7 @@
 
 # {{{
 
-. $ZDOT_RUN_HOOKS .bash_profile.d
+. $ZDOT_RUN_HOOKS .bash/profile.d
 
 : .bashrc ends # for debugging with -x
 

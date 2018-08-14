@@ -37,108 +37,6 @@ ZSHRC_KEEP_FUNCTIONS=
 
 sh_load_status 'setting options'
 
-setopt                       \
-     NO_all_export           \
-        always_last_prompt   \
-     NO_always_to_end        \
-        append_history       \
-        auto_cd              \
-        auto_list            \
-        auto_menu            \
-     NO_auto_name_dirs       \
-        auto_param_keys      \
-        auto_param_slash     \
-        auto_pushd           \
-        auto_remove_slash    \
-     NO_auto_resume          \
-        bad_pattern          \
-        bang_hist            \
-     NO_beep                 \
-     NO_brace_ccl            \
-        correct_all          \
-     NO_bsd_echo             \
-        cdable_vars          \
-     NO_chase_links          \
-     NO_clobber              \
-        complete_aliases     \
-        complete_in_word     \
-     NO_correct              \
-        correct_all          \
-        csh_junkie_history   \
-     NO_csh_junkie_loops     \
-     NO_csh_junkie_quotes    \
-     NO_csh_null_glob        \
-        equals               \
-        extended_glob        \
-        extended_history     \
-        function_argzero     \
-        glob                 \
-     NO_glob_assign          \
-        glob_complete        \
-     NO_glob_dots            \
-        glob_subst           \
-     NO_hash_cmds            \
-        hash_dirs            \
-        hash_list_all        \
-        hist_allow_clobber   \
-        hist_beep            \
-        hist_ignore_dups     \
-        hist_ignore_space    \
-     NO_hist_no_store        \
-        hist_verify          \
-     NO_hup                  \
-     NO_ignore_braces        \
-     NO_ignore_eof           \
-        interactive_comments \
-     NO_ksh_glob             \
-     NO_list_ambiguous       \
-     NO_list_beep            \
-        list_types           \
-        long_list_jobs       \
-        magic_equal_subst    \
-     NO_mail_warning         \
-     NO_mark_dirs            \
-     NO_menu_complete        \
-        multios              \
-     NO_nomatch              \
-        notify               \
-     NO_null_glob            \
-        numeric_glob_sort    \
-     NO_overstrike           \
-        path_dirs            \
-        posix_builtins       \
-     NO_print_exit_value     \
-     NO_prompt_cr            \
-        prompt_subst         \
-        pushd_ignore_dups    \
-     NO_pushd_minus          \
-        pushd_silent         \
-        pushd_to_home        \
-        rc_expand_param      \
-     NO_rc_quotes            \
-     NO_rm_star_silent       \
-     NO_sh_file_expansion    \
-        sh_option_letters    \
-        short_loops          \
-        sh_word_split        \
-     NO_single_line_zle      \
-     NO_sun_keyboard_hack    \
-        unset                \
-     NO_verbose              \
-        zle
-
-if [[ $ZSH_VERSION_TYPE == 'new' ]]; then
-  setopt                       \
-     NO_hist_expire_dups_first \
-        hist_find_no_dups      \
-     NO_hist_ignore_all_dups   \
-     NO_hist_no_functions      \
-     NO_hist_save_no_dups      \
-        inc_append_history     \
-        list_packed            \
-     NO_rm_star_wait
-fi
-
 # }}}
 
 # {{{ Infopath
@@ -236,7 +134,7 @@ unset TMOUT
 # {{{ Running local hooks
 
 sh_load_status 'local hooks'
-run_hooks .zshrc.d
+run_hooks .zsh/rc.d
 
 # }}}
 

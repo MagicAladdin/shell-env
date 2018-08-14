@@ -1,4 +1,4 @@
-# $Id: ~/.profile wandsas 2018/07/13
+# $Id: ~/.shared_env wandsas 2018/07/13
 
 # This should get run as part of setting up the environment
 # of any sh-compatible shell, including non-interactive ones;
@@ -9,7 +9,7 @@
 # Allow disabling of entire environment suite
 [[ -n "$INHERIT_ENV" ]] && return
 
-[[ -n "$profile_loaded" ]] && return
+[[ -n "$shared_env_loaded" ]] && return
 
 # {{{ System profile
 
@@ -27,7 +27,7 @@ check_com locale && {
 
 # }}}
 
-# {{{ Are wwe interactive?
+# {{{ Are we interactive?
 
 case "$-" in
     (*i*) shell_interactive=y ;;
@@ -103,6 +103,9 @@ else
 fi
 export ZDOTDIRPATH ZDOTDIRREVPATH
 
+[ -z "$ZDOTUSER" ] && [ -e ~/.zdotuser ] && ZDOTUSER=`cat ~/.zdotuser`
+export ZDOTUSER
+
 # }}}
 
 # {{{ Environment variables
@@ -131,7 +134,7 @@ export NO_AT_BRIDGE=1
 export LPASS_AGENT_TIMEOUT=0
 export LPASS_DISABLE_PINENTRY=1
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
-export SUDO_ASKPASS=/usr/bin/lxqt-openssh-askpass
+export SUDO_ASKPASS=/usr/bin/x11-ssh-askpass
 
 # }}}
 
