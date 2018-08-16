@@ -13,7 +13,7 @@
 
 # {{{ System profile
 
-[[ -r "/etc/profile" ]] && source /etc/profile
+#[[ -r "/etc/profile" ]] && source /etc/profile
 
 # }}}
 
@@ -38,11 +38,15 @@ esac
 
 # {{{ Loading status
 
+sh_load_status () {
+    echo "$@"
+}
+
 # Default to 1, and treat empty as 0.  This ensures we have an integer.
 : ${DEBUG_LOCAL_HOOKS=1}
 : ${DEBUG_LOCAL_HOOKS:=0}
 
-sh_load_status () {
+sh_load_status_dep () {
   # Find the name of the running shell
   _this_shell=${shell:-${0##*/}}
 
@@ -77,7 +81,7 @@ sh_load_status () {
   fi
 }
 
-sh_load_status .profile
+sh_load_status .shared_env
 
 # }}}
 
@@ -136,6 +140,7 @@ export LPASS_DISABLE_PINENTRY=1
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 export SUDO_ASKPASS=/usr/bin/x11-ssh-askpass
 
+export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 # }}}
 
 # {{{ PATH

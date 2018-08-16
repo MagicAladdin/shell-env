@@ -5,23 +5,24 @@
 # Allow disabling of entire environment suite
 [[ -n "$INHERIT_ENV" ]] && return
 
-sh_load_status .zshrc
+# shls1
+#sh_load_status .zshrc
 
 # {{{ Configure ZSH features
 
 # Empty means loading the feature
 
 # 1. https://github.com/psprint/zsh-morpho
-ZSHRC_SKIP_ZMORPHO=y
+ZSHRC_SKIP_ZMORPHO=
 
 # 2. https://github.com/zdharma/history-search-multi-word
-ZSHRC_SKIP_HISTORY_SEARCH_MULTI_WORD=y
+ZSHRC_SKIP_HISTORY_SEARCH_MULTI_WORD=
 
 # 3. https://github.com/zdharma/fast-syntax-highlighting
-ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING=y
+ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING=
 
 # 4. https://github.com/zsh-users/zsh-autosuggestions
-ZSHRC_SKIP_AUTOSUGGESTIONS=y
+ZSHRC_SKIP_AUTOSUGGESTIONS=
 
 ZSHRC_KEEP_FUNCTIONS=
 
@@ -35,10 +36,10 @@ ZSHRC_KEEP_FUNCTIONS=
 
 # {{{ Options
 
-sh_load_status 'setting options'
-
-
 # See man zshoptions(1)
+
+# shls2
+#sh_load_status 'setting options'
 
 # Expansion and globbing options
 setopt EXTENDED_GLOB            # do not forget to quote '^', '~' and '#'!
@@ -94,6 +95,11 @@ setopt PATH_DIRS                # Perform a path search even on command names wi
 
 # }}}
 
+# {{{ Environment
+
+# shls3
+sh_load_status 'setting environment'
+
 # {{{ Infopath
 
 typeset -U infopath
@@ -115,10 +121,44 @@ manpath=(
     )
 
 # }}}
+setopt prompt_subst
+autoload -U promptinit && promptinit
+
+prompt wandsas2
+
+#autoload -Uz compinit && compinit
+
+# Variables used by zsh
+
+# {{{ Choose word delimiter characters in line editor
+
+# The manual defines WORDCHARS as "a list of non-alphanumeric
+# characters considered part of a word by the line editor."
+# Nevertheless the effect is not intuitive and best understood by
+# experimenting with the value.
+WORDCHARS='>~'
+
+# }}}
+
+# {{{ Maximum size of completion listing
+
+#LISTMAX=0    # Only ask if line would scroll off screen
+LISTMAX=1000  # "Never" ask
+
+# }}}
+
+# {{{ Watching for other users
+
+LOGCHECK=60
+WATCHFMT="[%B%t%b] %B%n%b has %a %B%l%b from %B%M%b"
+
+# }}}
+
+# }}}
 
 # {{{ Miscellaneous
 
-sh_load_status 'miscellaneous'
+#sh_load_status 'miscellaneous'
 
 # {{{ ls colours
 
@@ -188,9 +228,9 @@ unset TMOUT
 
 # {{{ Specific to local setups
 
-sh_load_status 'local hooks'
+#sh_load_status 'local hooks'
 
-run_hooks .zsh/rc.d
+#run_hooks .zsh/rc.d
 
 # }}}
 

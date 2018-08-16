@@ -18,41 +18,50 @@ setopt NO_global_rcs
 
 # {{{ ZDOTDIR
 
-zdotdir=${ZDOTDIR:-$HOME}
-export ZDOTDIR="$zdotdir"
+export ZDOTDIR="${ZDOTDIR:-$HOME}"
 
 # }}}
 
-[[ -r $zdotdir/.shared_env ]] && . $zdotdir/.shared_env
+# {{{ Sourcing .shared_env
 
-sh_load_status '.zshenv already started before .shared_env'
+#[[ -r $ZDOTDIR/.shared_env ]] && . $ZDOTDIR/.shared_env
+
+# }}}
+
+#sh_load_status '.zshenv already started before .shared_env'
 
 setopt extended_glob
 
 # 077 would be more secure, but 022 is generally quite realistic
 umask 022
 
-sh_load_status 'search paths'
+#sh_load_status 'search paths'
 
-# {{{ prevent duplicates in path variables
+# {{{ path / manpath
 
 typeset -U PATH path
 export PATH
 
 path=(
-    $ZDOTDIR/{.local/,.go/,.cargo/,.cask/}bin
+    $ZDOTDIR/{.local/,.go/,.cargo/,.cask/,}bin
     $path
     )
 
 typeset -U manpath
 export MANPATH
 
+
+# }}}
+
+# {{{ ld_library_path / perl5lib
+
 typeset -TU LD_LIBRARY_PATH ld_library_path
+
 typeset -TU PERL5LIB perl5lib
 
 # }}}
 
-# {{{ Gopath
+# {{{ gopath
 
 export GOPATH=$ZDOTDIR/.go
 
@@ -101,7 +110,7 @@ done
 
 # {{{ Running host specific hooks
 
-run_hooks .zsh/env.d
+#run_hooks .zsh/env.d
 
 # }}}
 

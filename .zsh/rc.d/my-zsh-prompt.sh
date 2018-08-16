@@ -7,8 +7,8 @@ autoload -U promptinit && promptinit
 if [[ `id -u` = 0 ]] {
     prompt wandsas      # root's prompt
 } else {
-    #prompt wandsas2
-    prompt adam2 8bit
+    prompt wandsas2
+    #prompt adam2 8bit
 }
 
 [[ -n "$SCHROOT_CHROOT_NAME" ]] && PS1="($SCHROOT_CHROOT_NAME) $PS1"

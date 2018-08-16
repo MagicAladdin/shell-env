@@ -13,20 +13,20 @@ shopt -qs extglob
 
 # {{{ Environment
 
-[ -r ~/.bashenv ] && . ~/.bashenv
+#[ -r ~/.bashenv ] && . ~/.bashenv
 
 # }}}
 
-sh_load_status .bashrc
+#sh_load_status .bashrc
 
 # {{{ source /etc/bashrc
 
-if [ -f /etc/bashrc ]; then
-    sh_load_status '/etc/bashrc'
-    . /etc/bashrc
-else
-    [ -r $ZDOTDIR/.sysbashrc ] && . $ZDOTDIR/.sysbashrc
-fi
+#if [ -f /etc/bashrc ]; then
+#    sh_load_status '/etc/bashrc'
+#    . /etc/bashrc
+#else
+#    [ -r $ZDOTDIR/.sysbashrc ] && . $ZDOTDIR/.sysbashrc
+#fi
 
 # }}}
 
@@ -49,9 +49,7 @@ fi
 
 # {{{ Running bash hooks
 
-. $ZDOT_RUN_HOOKS .bash/rc.d
-
-: .bashrc ends # for debugging with -x
+#. $ZDOT_RUN_HOOKS .bash/rc.d
 
 # }}}
 
@@ -59,7 +57,7 @@ fi
 
 eval $(direnv hook bash)
 
-# }}}k
+# }}}
 
 # {{{ Preexec subshells
 
@@ -67,6 +65,6 @@ export __bp_enable_subshells="true"
 
 # }}}
 
-# vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0:
+#: .bashrc ends # for debugging with -x
 
-# -*- mode: sh -*-
+# vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0:

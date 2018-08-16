@@ -16,8 +16,7 @@ EOF
 }
 
 function prompt_wandsas2_setup {
-	setopt PROMPT_SUBST
-  prompt_opts=(cr subst percent)
+  #prompt_opts=(cr subst percent)
   typeset -A -g prompt_color
 
 	# Load required function
@@ -26,6 +25,7 @@ function prompt_wandsas2_setup {
 	# Add required hook-functions
 	add-zsh-hook precmd  prompt_wandsas2_precmd
 
+	setopt PROMPT_SUBST
 	setopt EXTENDED_GLOB
 	unsetopt BRACE_CCL
 

@@ -8,12 +8,12 @@
 # Allow disabling of all meddling with the environment
 [ -n "$INHERIT_ENV" ] && return 0
 
-[[ -r "$HOME/.bashrc" ]] && source $HOME/.bashrc
+#[[ -r "$HOME/.bashrc" ]] && source $HOME/.bashrc
 
 # {{{
 
-. $ZDOT_RUN_HOOKS .bash/profile.d
+#. $ZDOT_RUN_HOOKS .bash/profile.d
 
-: .bashrc ends # for debugging with -x
+#: .bashrc ends # for debugging with -x
 
 # vim:fenc=utf-8:ft=sh:
