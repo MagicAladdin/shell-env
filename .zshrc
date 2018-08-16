@@ -98,7 +98,7 @@ setopt PATH_DIRS                # Perform a path search even on command names wi
 # {{{ Environment
 
 # shls3
-sh_load_status 'setting environment'
+#sh_load_status 'setting environment'
 
 # {{{ Infopath
 

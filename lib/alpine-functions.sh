@@ -1,6 +1,6 @@
 
 die () {
-    local ret="$?"
+	local ret="$?"
 	printf '\033[1;31mERROR:\033[0m %s\n' "$@" >&2
 	exit "$?"
 }
