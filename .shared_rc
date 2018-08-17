@@ -1,18 +1,21 @@
 # $Id: ~/.shared_rc wandsas 2018/08/14
 
-# Adam's shared interactive environment startup file
 #
-# $Id$
+# Wandsas's shared environment startup file
 #
-# This should get run as part of setting up the interactive
-# environment of any sh-compatible shell; hence it should be kept as
-# fast and as portable as possible.  Note that that means silly things
-# like [ ! -e foo ] rather than ! [ -e foo ] ...
+# This should get run as part of setting up the environment
+# of any sh-compatible shell, including non-interactive ones;
+# hence it should be kept as fast and portable as possible.
+# Note that that means silly things like [ ! -e foo ] rather
+# than ! [ -e foo ] ...
+
+# Allow disabling of entire environment suite
 [ -n "$shared_rc_loaded" ] && return 0
 
 # {{{ Pager
 
 #export PERLDOC_PAGER='less -R'
+
 export PAGER='less'
 
 export LESS='-a -h100 -i -j15 -M -q -R -W -y100 -X'
@@ -46,4 +49,4 @@ fi
 
 shared_rc_loaded=y
 
-# vim:fenc=utf-8:ft=sh:
+# vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=0:et:fdm=marker:foldlevel=0

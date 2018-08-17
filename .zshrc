@@ -5,8 +5,7 @@
 # Allow disabling of entire environment suite
 [[ -n "$INHERIT_ENV" ]] && return
 
-# shls1
-#sh_load_status .zshrc
+sh_load_status .zshrc
 
 # {{{ Configure ZSH features
 
@@ -38,8 +37,7 @@ ZSHRC_KEEP_FUNCTIONS=
 
 # See man zshoptions(1)
 
-# shls2
-#sh_load_status 'setting options'
+sh_load_status 'setting options'
 
 # Expansion and globbing options
 setopt EXTENDED_GLOB            # do not forget to quote '^', '~' and '#'!
@@ -87,6 +85,7 @@ setopt NO_SH_FILE_EXPANSION     # Perform filename expansion (e.g., ~ expansion)
                                 # ‘~$USERNAME’ and ‘~{pfalstad,rc}’ will work.
 setopt NO_NULL_GLOB
 setopt NUMERIC_GLOB_SORT        # If numeric filenames are matched by a filename generation
+
                                 # pattern, sort the filenames numerically rather than
                                 # lexicographically.
 setopt PATH_DIRS                # Perform a path search even on command names with slashes
@@ -97,8 +96,7 @@ setopt PATH_DIRS                # Perform a path search even on command names wi
 
 # {{{ Environment
 
-# shls3
-#sh_load_status 'setting environment'
+sh_load_status 'setting environment'
 
 # {{{ Infopath
 
@@ -158,9 +156,9 @@ WATCHFMT="[%B%t%b] %B%n%b has %a %B%l%b from %B%M%b"
 
 # {{{ Miscellaneous
 
-#sh_load_status 'miscellaneous'
+sh_load_status 'miscellaneous'
 
-# {{{ ls colours
+# {{{ ls colors
 
 (( $+commands[dircolors] )) && () {
     if [[ -r "~/.dir_colors" ]] {
@@ -218,7 +216,7 @@ fi
 
 # }}}
 
-# {{{ Don't always autlogout
+# {{{ No autlogout
 
 unset TMOUT
 
@@ -228,9 +226,9 @@ unset TMOUT
 
 # {{{ Specific to local setups
 
-#sh_load_status 'local hooks'
+sh_load_status 'local hooks'
 
-#run_hooks .zsh/rc.d
+run_hooks .zsh/rc.d
 
 # }}}
 
@@ -243,4 +241,4 @@ fi
 
 # }}}
 
-# vim:fenc=utf-8:ft=zsh:fdm=marker:foldlevel=0:
+# vim:fenc=utf-8:ft=zsh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0:

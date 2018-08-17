@@ -13,20 +13,20 @@ shopt -qs extglob
 
 # {{{ Environment
 
-#[ -r ~/.bashenv ] && . ~/.bashenv
+[ -r ~/.bashenv ] && . ~/.bashenv
 
 # }}}
 
-#sh_load_status .bashrc
+sh_load_status .bashrc
 
 # {{{ source /etc/bashrc
 
-#if [ -f /etc/bashrc ]; then
-#    sh_load_status '/etc/bashrc'
-#    . /etc/bashrc
-#else
-#    [ -r $ZDOTDIR/.sysbashrc ] && . $ZDOTDIR/.sysbashrc
-#fi
+if [ -f /etc/bashrc ]; then
+    sh_load_status '/etc/bashrc'
+    . /etc/bashrc
+else
+    [ -r $ZDOTDIR/.sysbashrc ] && . $ZDOTDIR/.sysbashrc
+fi
 
 # }}}
 
@@ -49,7 +49,7 @@ fi
 
 # {{{ Running bash hooks
 
-#. $ZDOT_RUN_HOOKS .bash/rc.d
+. $ZDOT_RUN_HOOKS .bash/rc.d
 
 # }}}
 

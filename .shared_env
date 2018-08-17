@@ -1,5 +1,7 @@
 # $Id: ~/.shared_env wandsas 2018/07/13
-
+#
+# Wandsas's shared environment startup file
+#
 # This should get run as part of setting up the environment
 # of any sh-compatible shell, including non-interactive ones;
 # hence it should be kept as fast and portable as possible.
@@ -13,16 +15,16 @@
 
 # {{{ System profile
 
-#[[ -r "/etc/profile" ]] && source /etc/profile
+[[ -r "/etc/profile" ]] && source /etc/profile
 
 # }}}
 
 # {{{ Locales
 
 check_com locale && {
-    export LANG=en_US.UTF-8
-    export LC_COLLATE=C
-    unset LC_ALL
+  export LANG=en_US.UTF-8
+  export LC_COLLATE=C
+  unset LC_ALL
 }
 
 # }}}
@@ -30,23 +32,19 @@ check_com locale && {
 # {{{ Are we interactive?
 
 case "$-" in
-    (*i*) shell_interactive=y ;;
-      (*) shell_interactive=  ;;
+  (*i*) shell_interactive=y ;;
+    (*) shell_interactive=  ;;
 esac
 
 # }}}
 
 # {{{ Loading status
 
-sh_load_status () {
-    echo "$@"
-}
-
 # Default to 1, and treat empty as 0.  This ensures we have an integer.
 : ${DEBUG_LOCAL_HOOKS=1}
 : ${DEBUG_LOCAL_HOOKS:=0}
 
-sh_load_status_dep () {
+sh_load_status () {
   # Find the name of the running shell
   _this_shell=${shell:-${0##*/}}
 
@@ -141,6 +139,7 @@ export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 export SUDO_ASKPASS=/usr/bin/x11-ssh-askpass
 
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+
 # }}}
 
 # {{{ PATH
@@ -158,9 +157,9 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswi
 . $ZDOT_RUN_HOOKS .shared_env
 
 if [ -n "$shell_interactive" ]; then
-    . $ZDOTDIR/.shared_rc
+  . $ZDOTDIR/.shared_rc
 fi
 
 shared_env_loaded=y
 
-# vim:fenc=utf-8:ft=sh:ts=4:sts=4:sw=4:et:fdm=marker:foldlevel=0:
+# vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0:

@@ -24,20 +24,20 @@ export ZDOTDIR="${ZDOTDIR:-$HOME}"
 
 # {{{ Sourcing .shared_env
 
-#[[ -r $ZDOTDIR/.shared_env ]] && . $ZDOTDIR/.shared_env
+[[ -r $ZDOTDIR/.shared_env ]] && . $ZDOTDIR/.shared_env
 
 # }}}
 
-#sh_load_status '.zshenv already started before .shared_env'
+sh_load_status '.zshenv already started before .shared_env'
 
 setopt extended_glob
 
 # 077 would be more secure, but 022 is generally quite realistic
 umask 022
 
-#sh_load_status 'search paths'
-
 # {{{ path / manpath
+
+sh_load_status 'search paths'
 
 typeset -U PATH path
 export PATH
@@ -50,18 +50,21 @@ path=(
 typeset -U manpath
 export MANPATH
 
+# }}}
+
+# {{{ ld_library_path
+
+typeset -TU LD_LIBRARY_PATH ld_library_path
 
 # }}}
 
-# {{{ ld_library_path / perl5lib
-
-typeset -TU LD_LIBRARY_PATH ld_library_path
+# {{{ Perl5 libraries
 
 typeset -TU PERL5LIB perl5lib
 
 # }}}
 
-# {{{ gopath
+# {{{ Gopath
 
 export GOPATH=$ZDOTDIR/.go
 
@@ -74,6 +77,7 @@ export PYTHONPATH
 
 pythonpath=(
     $HOME/.local/lib64/python{2.*,3.*}/site-packages(N)
+    /usr/local/lib64/python{2.*,3.*}/sitepackages(N)
     $pythonpath
     )
 
@@ -86,6 +90,7 @@ export RUBYLIB
 
 rubylib=(
     $HOME/.local/lib/ruby/{site_ruby,}(N)
+
     $rubylib
     )
 
@@ -108,9 +113,9 @@ done
 
 # }}}
 
-# {{{ Running host specific hooks
+# {{{ Running hooks specific to hosts
 
-#run_hooks .zsh/env.d
+run_hooks .zsh/env.d
 
 # }}}
 
