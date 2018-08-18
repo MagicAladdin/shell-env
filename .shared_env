@@ -114,7 +114,7 @@ export ZDOTUSER
 
 export EDITOR=nvim
 export PAGER=less
-export BROWSER=lynx
+#export BROWSER=lynx
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache

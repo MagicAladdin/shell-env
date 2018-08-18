@@ -12,16 +12,16 @@ sh_load_status .zshrc
 # Empty means loading the feature
 
 # 1. https://github.com/psprint/zsh-morpho
-ZSHRC_SKIP_ZMORPHO=
+ZSHRC_SKIP_ZMORPHO=y
 
 # 2. https://github.com/zdharma/history-search-multi-word
-ZSHRC_SKIP_HISTORY_SEARCH_MULTI_WORD=
+ZSHRC_SKIP_HISTORY_SEARCH_MULTI_WORD=y
 
 # 3. https://github.com/zdharma/fast-syntax-highlighting
-ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING=
+ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING=y
 
 # 4. https://github.com/zsh-users/zsh-autosuggestions
-ZSHRC_SKIP_AUTOSUGGESTIONS=
+ZSHRC_SKIP_AUTOSUGGESTIONS=y
 
 ZSHRC_KEEP_FUNCTIONS=
 
@@ -119,12 +119,6 @@ manpath=(
     )
 
 # }}}
-setopt prompt_subst
-autoload -U promptinit && promptinit
-
-prompt wandsas2
-
-#autoload -Uz compinit && compinit
 
 # Variables used by zsh
 
@@ -138,9 +132,16 @@ WORDCHARS='>~'
 
 # }}}
 
+# {{{ Save a large history
+
+HISTFILE=~/.zshhistory
+HISTSIZE=10000
+SAVEHIST=10000
+
+# }}}
+
 # {{{ Maximum size of completion listing
 
-#LISTMAX=0    # Only ask if line would scroll off screen
 LISTMAX=1000  # "Never" ask
 
 # }}}
@@ -149,6 +150,317 @@ LISTMAX=1000  # "Never" ask
 
 LOGCHECK=60
 WATCHFMT="[%B%t%b] %B%n%b has %a %B%l%b from %B%M%b"
+
+# }}}
+
+# }}}
+
+# {{{ my-zsh-prompt
+
+autoload -U promptinit && promptinit
+
+setopt prompt_subst
+
+if [[ `id -u` = 0 ]] {
+    prompt wandsas      # root's prompt
+} else {
+    prompt wandsas2
+    #prompt adam2 8bit
+}
+
+[[ -n "$SCHROOT_CHROOT_NAME" ]] && PS1="($SCHROOT_CHROOT_NAME) $PS1"
+
+# }}}
+
+# {{{ Zsh Completion System
+
+sh_load_status 'completion system'
+
+# compinit options:
+# -D ~/.zcompdump
+# -C don't check for new functions
+# -u don't look for insecure files
+# -i don't warn when insecure files found
+# compinit -D -u -C -i
+
+autoload -U complist
+autoload -U compinit && compinit -d $ZDOTDIR/.zcompdump
+
+
+# {{{ Completion options
+
+setopt COMPLETE_IN_WORD     # complete from both ends of a word
+setopt ALWAYS_TO_END        # move cursor to the end of a completed word
+setopt PATH_DIRS            # perform path search even on command names with slashes
+setopt AUTO_MENU            # show completion menu on a successive tab press
+setopt AUTO_LIST            # automatically list choices on ambiguous completion
+setopt AUTO_PARAM_SLASH     # if completed parameter is a directory, add a trailing slash
+setopt NO_MENU_COMPLETE     # do not autoselect the first completion entry
+setopt NO_FLOW_CONTROL      # disable start/stop characters in shell editor
+setopt CORRECT              # smart completion correction
+
+# }}}
+
+# {{{ General completion technique
+
+zstyle ':completion:*' completer _complete _prefix _ignored _complete:-extended
+
+zstyle ':completion::prefix-1:*' completer _complete
+zstyle ':completion:incremental:*' completer _complete _correct
+zstyle ':completion:predict:*' completer _complete
+
+zstyle ':completion:*:approximate-one:*'  max-errors 1
+zstyle ':completion:*:approximate-four:*' max-errors 4
+
+# e.g. f-1.j<TAB> would complete to foo-123.jpeg
+zstyle ':completion:*:complete-extended:*' \
+  matcher 'r:|[.,_-]=* r:|=*'
+
+# }}}
+
+# {{{ Completion Caching
+
+zstyle ':completion:*'              use-cache  yes
+zstyle ':completion:*:complete:*'   cache-path ${ZDOTDIR:-${HOME}/.cache}
+
+# }}}
+
+# {{{ Expand partial paths
+
+# e.g. /u/s/l/D/fs<TAB> would complete to
+#      /usr/src/linux/Documentation/fs
+zstyle ':completion:*' expand 'yes'
+zstyle ':completion:*' squeeze-slashes 'yes'
+
+# }}}
+
+# {{{ Approximate completer
+
+# allow one error for every three characters typed in approximate completer
+zstyle ':completion:*:approximate:'     max-errors 'reply=( $((($#PREFIX+$#SUFFIX)/3 )) numeric )'
+
+# }}}
+
+# {{{ don't complete backup files (e.g. bin/foo~) as executables
+
+zstyle ':completion:*:complete:-command-::commands' ignored-patterns '(*\~)'
+
+# }}}
+
+# {{{ Don't complete uninteresting users...
+
+zstyle ':completion:*:*:*:users' ignored-patterns \
+  adm amanda apache avahi beaglidx bin cacti canna clamav daemon \
+  dbus distcache dovecot fax ftp games gdm gkrellmd gopher \
+  hacluster haldaemon halt hsqldb ident junkbust ldap lp lighttpd mail \
+  mailman mailnull mldonkey mysql nagios \
+  named netdump news nfsnobody nobody nscd ntp nut nx openvpn \
+  operator pcap postfix postgres privoxy pulse pvm quagga radvd \
+  rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs '_*'
+
+# ... unless we really want to.
+zstyle '*' single-ignored show
+
+# }}}
+
+# {{{ Menu completion
+
+# start menu completion only if it could find no unambiguous initial string
+zstyle ':completion:*:correct:*'        insert-unambiguous true
+#zstyle ':completion:*:corrections'      format $'%{\e[0;31m%}%d (errors: %e)m%{g\e[0m%}'
+zstyle ':completion:*:corrections'      format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:correct:*'        original true
+
+# activate color-completion
+zstyle ':completion:*:default'          list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:cd:*'           tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+zstyle ':completion:*:-tilde-:*'        group-order 'named-directories' 'path-directories' 'expand'
+zstyle ':completion:*'                  squeeze-slashes true
+
+# format on completion
+zstyle ':completion:*:descriptions'     format ' %F{yellow}-- %d --%f'
+
+# automatically complete 'cd -<tab>' and 'cd -<ctrl-d>' with menu
+# INFO: maybe slow
+zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+
+# insert all expansions for expand completer
+zstyle ':completion:*:expand:*'         tag-order all-expansions
+zstyle ':completion:*:history-words'    list false
+
+# activate menu
+zstyle ':completion:*:history-words'    menu yes
+zstyle ':completion:*:history-words'    list false
+
+# ignore duplicate entries
+zstyle ':completion:*:history-words'    remove-all-dups yes
+zstyle ':completion:*:history-words'    stop yes
+
+# Docker completion
+zstyle ':completion:*:*:docker:*'       option-stacking yes
+zstyle ':completion:*:*:docker:-*:*'    option-stacking yes
+
+# match uppercase from lowercase
+zstyle ':completion:*'                  matcher-list 'm:{a-z}={A-Z}'
+
+# }}}
+
+# {{{ Output formatting
+
+# separate matches into groups
+zstyle ':completion:*:matches'          group 'yes'
+zstyle ':completion:*'                  group-name ''
+
+# if there are more than 5 options allow selecting from a menu
+zstyle ':completion:*:*:*:*:*'          menu select
+
+zstyle ':completion:*:messages'         format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:descriptions'     format ' %F{yellow}-- %d% --%f'
+zstyle ':completion:*:warnings'         format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default'          list-prompt '%S%M matches%s'
+zstyle ':completion:*'                  format ' %F{yellow}-- %d --%f'
+
+# describe options in full
+zstyle ':completion:*:options'          description 'yes'
+zstyle ':completion:*:options'          auto-description '%d'
+
+# Activate color-completion
+zstyle ':completion:*:default'          list-colors ${(s.:.)LS_COLORS}
+
+# }}}
+
+# {{{ process completion
+
+zstyle ':completion:*:*:*:*:processes'  menu yes select
+zstyle ':completion:*:*:*:*:processes'  force-list always
+zstyle ':completion:*:*:*:*:processes'  command 'ps -u $LOGNAME -o pid,user,command -w'
+
+zstyle ':completion:*:processes-names'  command 'ps c -u ${USER} -o command | uniq'
+
+# }}}
+
+# {{{ killall completion
+
+zstyle ':completion:*:*:kill:*'         menu yes select
+zstyle ':completion:*:*:kill:*'         force-list always
+zstyle ':completion:*:*:kill:*'         insert-ids single
+
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;36=0=01'
+
+zstyle ':completion:*:kill:*'           force-list always
+zstyle ':completion:*:processes'        command "ps -eo pid,user,comm,cmd -w -w"
+
+zstyle ':completion:*:*:killall:*'      menu yes select
+zstyle ':completion:*:killall:*'        force-list always
+
+# }}}
+
+# {{{ array/association subscripts
+
+# When completing inside array or association subscripts, the array elements
+# are more useful than parameters so complete them first
+zstyle ':completion:*:*:-subscript-:*'  tag-order indexes parameters
+
+# }}}
+
+
+# {{{ verbose completion information
+
+zstyle ':completion:*'                  verbose true
+
+# recent (as of Dec 2007) zsh versions are able to provide descriptions
+# for commands (read: 1st word in the line) that it will list for the user
+# to choose from. The following disables that, because it's not exactly fast.
+zstyle ':completion:*:-command-:*:'     verbose false
+
+# }}}
+
+# {{{ define files to ignore for zcompile
+
+zstyle ':completion:*:*:zcompile:*'     ignored-patterns '(*~|*.zwc)'
+zstyle ':completion:correct:'           prompt 'correct to: %e'
+
+# }}}
+
+# {{{ Ignore completion functions for commands you don't have:
+
+zstyle ':completion::(^approximate*):*:functions' ignored-patterns '(_*|pre(cmd|exec)|prompt_*)'
+
+# }}}
+
+# {{{  Man
+zstyle ':completion:*:manuals'          separate-sections true
+zstyle ':completion:*:manuals.(^1*)'    insert-sections true
+
+# }}}
+
+# {{{ Add a special SUDO_PATH for completion of sudo & friends
+
+[[ $UID -eq 0 ]] || () {
+	local -T SUDO_PATH sudo_path
+	local -U sudo_path
+  sudo_path=($path {,/usr{,/local}}/sbin(N-/) $HOME/{.go/,.rust/,.local/,}bin)
+	zstyle ":completion:*:(su|sudo|sux|sudox):*" environ PATH="$SUDO_PATH"
+}
+
+# }}}
+
+# {{{ provide .. as a completion
+
+zstyle ':completion:*' special-dirs ..
+
+# }}}
+
+# {{{ run rehash on completion so new installed program are found automatically:
+
+function _force_rehash () {
+    (( CURRENT == 1 )) && rehash
+    return 1
+}
+
+# }}}
+
+# {{{ Smart completion correction
+
+zstyle -e ':completion:*' completer '
+if [[ $_last_try != "$HISTNO$BUFFER$CURSOR" ]] ; then
+    _last_try="$HISTNO$BUFFER$CURSOR"
+    reply=(_complete _match _ignored _prefix _files)
+else
+    if [[ $words[1] == (rm|mv) ]] ; then
+        reply=(_complete _files)
+    else
+        reply=(_oldlist _expand _force_rehash _complete _ignored _correct _approximate _files)
+    fi
+fi'
+
+# }}}
+
+# {{{ Host completion
+
+[[ -r ~/.ssh/config ]] && _ssh_config_hosts=(${${(s: :)${(ps:\t:)${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }}}:#*[*?]*}) || _ssh_config_hosts=()
+[[ -r ~/.ssh/known_hosts ]] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
+[[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
+
+hosts=(
+    $(hostname)
+    "$_ssh_config_hosts[@]"
+    "$_ssh_hosts[@]"
+    "$_etc_hosts[@]"
+    localhost
+)
+zstyle ':completion:*:hosts' hosts $hosts
+
+# }}}
+
+# {{{ GNU generic works with commands that provide standard --help options
+
+for compcom in cp df feh gpasswd head mv pal stow uname; do
+    [[ -z ${_comps[$compcom]} ]] && compdef _gnu_generic ${compcom}
+done;
+
+unset compcom
 
 # }}}
 
