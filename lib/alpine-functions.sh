@@ -1,16 +1,16 @@
 
 die () {
     local ret="$?"
-	printf '\033[1;31mERROR:\033[0m %s\n' "$@" >&2
+	printf '\033[1;31mERROR\033[0m %s\n' "$@" >&2
 	exit "$?"
 }
 
 einfo () {
-	printf '\n\033[1;36m> %s\033[0m\n' "$@" >&2
+	printf '\n\033[1;36mINFO\033[0m %s\n' "$@" >&2
 }
 
 ewarn () {
-	printf '\033[1;33m> %s\033[0m\n' "$@" >&2
+	printf '\033[1;33mWARN\033[0m %s\n' "$@" >&2
 }
 
 debug () {
