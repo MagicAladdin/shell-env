@@ -7,18 +7,18 @@
 
 sh_load_status .zshrc
 
-# {{{ Configure ZSH features
+# {{{ Enable ZSH features
 
 # Empty means loading the feature
 
 # 1. https://github.com/psprint/zsh-morpho
-ZSHRC_SKIP_ZMORPHO=y
+ZSHRC_SKIP_ZMORPHO=
 
 # 2. https://github.com/zdharma/history-search-multi-word
-ZSHRC_SKIP_HISTORY_SEARCH_MULTI_WORD=y
+ZSHRC_SKIP_HISTORY_SEARCH_MULTI_WORD=
 
 # 3. https://github.com/zdharma/fast-syntax-highlighting
-ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING=y
+ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING=
 
 # 4. https://github.com/zsh-users/zsh-autosuggestions
 ZSHRC_SKIP_AUTOSUGGESTIONS=y
@@ -94,6 +94,46 @@ setopt PATH_DIRS                # Perform a path search even on command names wi
 
 # }}}
 
+# {{{ Modules
+
+# See man zshmodules
+
+# Zsh edit small files with the command line editor
+autoload -U zed
+
+# Zsh massive renaming
+autoload -U zmv
+alias mmv='noglob zmv -W'
+
+# Smart pasting and escaping
+autoload -Uz bracketed-paste-url-magic
+zle -N bracketed-paste bracketed-paste-url-magic
+
+# Smart URLs
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
+
+# Helping system
+autoload -Uz run-help run-help-sudo run-help-git run-help-openssl run-help-ip
+
+# Compile functions
+check_com precompile && () {
+    autoload -U precompile && precompile
+}
+
+# Don't correct these commands
+alias man='nocorrect man'
+alias mkdir='nocorrect mkdir'
+alias mv='nocorrect mv'
+
+# For extensions, we use the defaults of zsh-mime-setup
+# see /etc/mailcap, /etc/mime.types for system configs
+# and ~/.mailcap, ~/.config/mimeapps.list for user configs.
+zstyle ":mime:*" current-shell true
+zsh-mime-setup
+
+# }}}
+
 # {{{ Environment
 
 sh_load_status 'setting environment'
@@ -155,7 +195,7 @@ WATCHFMT="[%B%t%b] %B%n%b has %a %B%l%b from %B%M%b"
 
 # }}}
 
-# {{{ my-zsh-prompt
+# {{{ Prompt
 
 autoload -U promptinit && promptinit
 
@@ -172,7 +212,7 @@ if [[ `id -u` = 0 ]] {
 
 # }}}
 
-# {{{ Zsh Completion System
+# {{{ Completions
 
 sh_load_status 'completion system'
 
@@ -364,7 +404,6 @@ zstyle ':completion:*:*:-subscript-:*'  tag-order indexes parameters
 
 # }}}
 
-
 # {{{ verbose completion information
 
 zstyle ':completion:*'                  verbose true
@@ -389,7 +428,7 @@ zstyle ':completion::(^approximate*):*:functions' ignored-patterns '(_*|pre(cmd|
 
 # }}}
 
-# {{{  Man
+# {{{  Manuals
 zstyle ':completion:*:manuals'          separate-sections true
 zstyle ':completion:*:manuals.(^1*)'    insert-sections true
 
@@ -437,11 +476,11 @@ fi'
 
 # }}}
 
-# {{{ Host completion
+# {{{ Hosts
 
 [[ -r ~/.ssh/config ]] && _ssh_config_hosts=(${${(s: :)${(ps:\t:)${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }}}:#*[*?]*}) || _ssh_config_hosts=()
 [[ -r ~/.ssh/known_hosts ]] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
-[[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
+[[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}} } || _etc_hosts=()
 
 hosts=(
     $(hostname)
@@ -454,7 +493,9 @@ zstyle ':completion:*:hosts' hosts $hosts
 
 # }}}
 
-# {{{ GNU generic works with commands that provide standard --help options
+# {{{ GNU generics
+
+# Works with commands that provide standard --help options
 
 for compcom in cp df feh gpasswd head mv pal stow uname; do
     [[ -z ${_comps[$compcom]} ]] && compdef _gnu_generic ${compcom}

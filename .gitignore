@@ -1,4 +1,5 @@
 
-*.zwc
+.zsh/functions.zwc*
 
-.zsh/*.zwc
+.zsh/*/my-functions.zwc*
+.zsh/*/site-functions.zwc*
