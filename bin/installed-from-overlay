@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+EIX_LIMIT=0 eix --only-names --installed-from-overlay $1
+
+# vim:fenc=utf-8:ft=sh:
