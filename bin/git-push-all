@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -n "$(git remote| grep all)" ]; then
+    git remote remove all
+fi
+
+for r in $(git remote); do
+    git config --add remote.all.url `git config remote.$r.url`
+done
+
+# vim:fenc=utf-8:ft=sh:

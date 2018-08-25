@@ -4,7 +4,7 @@
 # Configuration
 # Replace SSH_USERNAME, SSH_HOST, SSH_GIT_PATH with your details
 USER=git
-HOST=rpi.gnu.local
+HOST=rpi.orwell.local
 GIT_PATH=/wandsas
 
 REPO=${PWD##*/}

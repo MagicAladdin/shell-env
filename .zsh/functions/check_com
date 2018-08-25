@@ -8,7 +8,7 @@
 #   -c  only checks for external commands
 #   -g  does the usual tests and also checks for global aliases
 
-function check_com () {
+check_com () {
     emulate -L zsh
     local -i comonly gatoo
     comonly=0

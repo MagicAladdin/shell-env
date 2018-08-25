@@ -204,8 +204,9 @@ setopt prompt_subst
 if [[ `id -u` = 0 ]] {
     prompt wandsas      # root's prompt
 } else {
-    prompt wandsas2
+    prompt wandsas3
     #prompt adam2 8bit
+    #prompt clover
 }
 
 [[ -n "$SCHROOT_CHROOT_NAME" ]] && PS1="($SCHROOT_CHROOT_NAME) $PS1"
@@ -216,16 +217,8 @@ if [[ `id -u` = 0 ]] {
 
 sh_load_status 'completion system'
 
-# compinit options:
-# -D ~/.zcompdump
-# -C don't check for new functions
-# -u don't look for insecure files
-# -i don't warn when insecure files found
-# compinit -D -u -C -i
-
 autoload -U complist
 autoload -U compinit && compinit -d $ZDOTDIR/.zcompdump
-
 
 # {{{ Completion options
 
@@ -277,7 +270,7 @@ zstyle ':completion:*' squeeze-slashes 'yes'
 # {{{ Approximate completer
 
 # allow one error for every three characters typed in approximate completer
-zstyle ':completion:*:approximate:'     max-errors 'reply=( $((($#PREFIX+$#SUFFIX)/3 )) numeric )'
+zstyle ':completion:*:approximate:' max-errors 'reply=( $((($#PREFIX+$#SUFFIX)/3 )) numeric )'
 
 # }}}
 
@@ -307,19 +300,13 @@ zstyle '*' single-ignored show
 
 # start menu completion only if it could find no unambiguous initial string
 zstyle ':completion:*:correct:*'        insert-unambiguous true
-#zstyle ':completion:*:corrections'      format $'%{\e[0;31m%}%d (errors: %e)m%{g\e[0m%}'
 zstyle ':completion:*:corrections'      format ' %F{green}-- %d (errors: %e) --%f'
 zstyle ':completion:*:correct:*'        original true
 
 # activate color-completion
 zstyle ':completion:*:default'          list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:cd:*'           tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
 zstyle ':completion:*:-tilde-:*'        group-order 'named-directories' 'path-directories' 'expand'
-zstyle ':completion:*'                  squeeze-slashes true
-
-# format on completion
-zstyle ':completion:*:descriptions'     format ' %F{yellow}-- %d --%f'
 
 # automatically complete 'cd -<tab>' and 'cd -<ctrl-d>' with menu
 # INFO: maybe slow
@@ -348,25 +335,28 @@ zstyle ':completion:*'                  matcher-list 'm:{a-z}={A-Z}'
 
 # {{{ Output formatting
 
-# separate matches into groups
-zstyle ':completion:*:matches'          group 'yes'
-zstyle ':completion:*'                  group-name ''
+# Separate matches into groups
+zstyle ':completion:*:matches'      group 'yes'
+
+# Describe each match group.
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d% --%f'
 
 # if there are more than 5 options allow selecting from a menu
-zstyle ':completion:*:*:*:*:*'          menu select
+zstyle ':completion:*:*:*:*:*'      menu select
 
-zstyle ':completion:*:messages'         format ' %F{purple} -- %d --%f'
-zstyle ':completion:*:descriptions'     format ' %F{yellow}-- %d% --%f'
-zstyle ':completion:*:warnings'         format ' %F{red}-- no matches found --%f'
-zstyle ':completion:*:default'          list-prompt '%S%M matches%s'
-zstyle ':completion:*'                  format ' %F{yellow}-- %d --%f'
+# Messages/Warnings format
+zstyle ':completion:*:messages'     format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings'     format ' %F{red}-- no matches found --%f'
 
-# describe options in full
-zstyle ':completion:*:options'          description 'yes'
-zstyle ':completion:*:options'          auto-description '%d'
+zstyle ':completion:*:default'      list-prompt '%S%M matches%s'
+zstyle ':completion:*'              format ' %F{yellow}-- %d --%f'
 
-# Activate color-completion
-zstyle ':completion:*:default'          list-colors ${(s.:.)LS_COLORS}
+# Describe options in full
+zstyle ':completion:*:options'      description 'yes'
+zstyle ':completion:*:options'      auto-description '%d'
+
+# activate color-completion
+zstyle ':completion:*:default'      list-colors ${(s.:.)LS_COLORS}
 
 # }}}
 
@@ -376,20 +366,11 @@ zstyle ':completion:*:*:*:*:processes'  menu yes select
 zstyle ':completion:*:*:*:*:processes'  force-list always
 zstyle ':completion:*:*:*:*:processes'  command 'ps -u $LOGNAME -o pid,user,command -w'
 
-zstyle ':completion:*:processes-names'  command 'ps c -u ${USER} -o command | uniq'
-
-# }}}
-
-# {{{ killall completion
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;36=0=01'
 
 zstyle ':completion:*:*:kill:*'         menu yes select
 zstyle ':completion:*:*:kill:*'         force-list always
 zstyle ':completion:*:*:kill:*'         insert-ids single
-
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;36=0=01'
-
-zstyle ':completion:*:kill:*'           force-list always
-zstyle ':completion:*:processes'        command "ps -eo pid,user,comm,cmd -w -w"
 
 zstyle ':completion:*:*:killall:*'      menu yes select
 zstyle ':completion:*:killall:*'        force-list always
@@ -451,7 +432,7 @@ zstyle ':completion:*' special-dirs ..
 
 # }}}
 
-# {{{ run rehash on completion so new installed program are found automatically:
+# {{{ rehash on completion so new installed program are found automatically:
 
 function _force_rehash () {
     (( CURRENT == 1 )) && rehash
@@ -476,32 +457,57 @@ fi'
 
 # }}}
 
-# {{{ Hosts
-
-[[ -r ~/.ssh/config ]] && _ssh_config_hosts=(${${(s: :)${(ps:\t:)${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }}}:#*[*?]*}) || _ssh_config_hosts=()
-[[ -r ~/.ssh/known_hosts ]] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
-[[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}} } || _etc_hosts=()
-
-hosts=(
-    $(hostname)
-    "$_ssh_config_hosts[@]"
-    "$_ssh_hosts[@]"
-    "$_etc_hosts[@]"
-    localhost
-)
-zstyle ':completion:*:hosts' hosts $hosts
-
-# }}}
-
 # {{{ GNU generics
 
 # Works with commands that provide standard --help options
-
 for compcom in cp df feh gpasswd head mv pal stow uname; do
     [[ -z ${_comps[$compcom]} ]] && compdef _gnu_generic ${compcom}
 done;
-
 unset compcom
+
+# }}}
+
+# {{{ Usernames
+
+run_hooks .zsh/users.d
+zstyle ':completion:*' users $zsh_users
+
+# }}}
+
+# {{{ Hostnames
+
+# Extract hosts from /etc/hosts
+# ~~ no glob_subst -> don't treat contents of /etc/hosts like pattern
+# (f) shorthand for (ps:\n:) -> split on \n ((p) enables recognition of \n etc.)
+# %%\#* -> remove comment lines and trailing comments
+# (ps:\t:) -> split on tab
+# ##[:blank:]#[^[:blank:]]# -> remove comment lines
+
+: ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}}
+
+  # _ssh_known_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*})
+
+zsh_hosts=(
+    "$_etc_hosts[@]"
+    localhost
+)
+
+run_hooks .zsh/hosts.d
+zstyle ':completion:*' hosts $zsh_hosts
+
+# }}}
+
+# {{{ (user, host) account pairs
+
+run_hooks .zsh/accounts.d
+zstyle ':completion:*:my-accounts'    users-hosts "$my_accounts[@]"
+zstyle ':completion:*:other-accounts' users-hosts "$other_accounts[@]"
+
+# }}}
+
+# {{{ pdf
+
+compdef _pdf pdf
 
 # }}}
 

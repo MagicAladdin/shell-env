@@ -24,8 +24,6 @@ sh_load_status .bashrc
 if [ -f /etc/bashrc ]; then
     sh_load_status '/etc/bashrc'
     . /etc/bashrc
-else
-    [ -r $ZDOTDIR/.sysbashrc ] && . $ZDOTDIR/.sysbashrc
 fi
 
 # }}}
@@ -36,14 +34,9 @@ PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!x[$0]++' | sed "s/\(.*\).\{1\}/\1/
 
 # }}}
 
-if which emacs >/dev/null 2>&1; then
-    e () {
-        emacs "$@" 2>&1 &
-    }
-fi
 # {{{ Are we running an interactive shell?
 
-[[ -n "$shell_interactive" ]] || return
+[[ -z "$shell_interactive" ]] || return
 
 # }}}
 

@@ -10,7 +10,7 @@ zshrc_morpho () {
   [[ -r "${basedir}/${morphorc}" ]] && source ${basedir}/${morphorc} || return
 
   # screen-saver: zmorpho, zmandelbrot, zblank & pmorpho
-  zstyle ":morpho" screen-saver "zmorpho"
+  zstyle ":morpho" screen-saver "zmandelbrot"
   zstyle ":morpho" arguments "-s"
   zstyle ":morpho" delay "290"
   zstyle ":morpho" check-interval "60"

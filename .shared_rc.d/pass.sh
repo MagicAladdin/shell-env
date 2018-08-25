@@ -5,18 +5,18 @@ info () {
 }
 
 pass-default () {
-    export PASSWORD_STORE_DIR="$HOME/.pass-wandsas"
-    info "PASSWORD_STORE_DIR=$PASSWORD_STORE_DIR"
+    export PASSWORD_STORE_DIR=$HOME/.pass-wandsas
+    info PASSWORD_STORE_DIR=$PASSWORD_STORE_DIR
 }
 
 pass-android () {
-    export PASSWORD_STORE_DIR="$HOME/.pass-android"
-    info "PASSWORD_STORE_DIR=$PASSWORD_STORE_DIR"
+    export PASSWORD_STORE_DIR=$HOME/.pass-android
+    info PASSWORD_STORE_DIR=$PASSWORD_STORE_DIR
 }
 
 pass-aladdin () {
-    export PASSWORD_STORE_DIR="$HOME/.pass-aladdin"
-    info "PASSWORD_STORE_DIR=$PASSWORD_STORE_DIR"
+    export PASSWORD_STORE_DIR=$HOME/.pass-aladdin
+    info PASSWORD_STORE_DIR=$PASSWORD_STORE_DIR
 }
 
 [[ -z "$PASSWORD_STORE_DIR" ]] && pass-default
