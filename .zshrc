@@ -600,4 +600,6 @@ fi
 
 # }}}
 
+[[ -r "~/.aliases.local" ]] && source ~/.aliases.local
+
 # vim:fenc=utf-8:ft=zsh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0:
