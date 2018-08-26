@@ -15,6 +15,7 @@ alias   gbu='git branch --set-upstream-to='
 alias gbuom='git branch --set-upstream-to=origin/master master'
 # git commit
 alias    gc='git commit'
+alias    gcm='git commit --message'
 alias    gca='git commit --all'
 alias   gcam='git commit --all --message'
 alias   gcad='git commit --all --amend'
@@ -47,7 +48,7 @@ alias     gg='git grep'
 ### git log
 alias     gl='git log --oneline'
 alias    glg='git log --oneline --graph --decorate'
-alias    gll='git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit'
+alias    gll="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit'"
 alias   glll="log --topo-order --stat --pretty=format:'%C(bold)%C(yellow)Commit:%C(reset) %C(yellow)%H%C(red)%d%n%C(bold)%C(yellow)Author:%C(reset) %C(cyan)%an <%ae>%n%C(bold)%C(yellow)Date:%C(reset)   %C(blue)%ai (%ar)%C(reset)%n%+B'"
 ### git ls-files
 alias    gls='git ls-files'
@@ -81,19 +82,15 @@ alias    gp='git push'
 alias   gpf='git push -f'
 alias   gpu='git push -u'
 alias   gpt='git push --tags'
-
 alias   gpa='git push --all'
 alias   gpA='git push --all && git push --tags'
-
 alias   gpo='git push origin'
 alias  gpom='git push origin master'
 alias gpfom='git push -f origin master'
 alias gpuom='git push -u origin master'
 alias   gpu='git push upstream'
 alias  gpum='git push upstream master'
-alias   gpg='git push github'
 alias  gpgm='git push github master'
-alias   gpg='git push github'
 alias   gpw='git push wandsas'
 alias  gpwm='git push wandsas master'
 alias  gpam='git push all master'

@@ -152,7 +152,7 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswi
 
 # }}}
 
-# {{{ Running profile hooks
+# {{{ Running shared hooks
 
 . $ZDOT_RUN_HOOKS .shared_env
 
