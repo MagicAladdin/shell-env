@@ -212,7 +212,7 @@ run_hooks () {
     # This is for the benefit of find_hooks.
     return 0
   fi
-
+  
   iterate_hooks source "$@"
 }
 
