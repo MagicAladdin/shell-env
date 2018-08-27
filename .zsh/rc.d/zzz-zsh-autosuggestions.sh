@@ -39,13 +39,12 @@ zshrc_bindkey() {
 
 zshrc_autosuggestions() {
 	is-at-least 4.3.11 || return
-	(($+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE)) || \
 	path=(${DEFAULTS:+${^DEFAULTS%/}{,/zsh}{/zsh-autosuggestions,}}
-		${GITS:+${^GITS%/}{/zsh-autosuggestions{.git,},}}
 		${EXPREFIX:+${^EPREFIX%/}/usr/share/zsh/site-contrib{/zsh-autosuggestions,}}
 		/usr/share/zsh/site-contrib{/zsh-autosuggestions,}
 		$path) . zsh-autosuggestions.zsh NIL || return
-	if [[ $(echotc Co) -ge 256 ]]
+
+  if [[ $(echotc Co) -ge 256 ]]
 	then	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=99,bold,bg=18'
 	else	ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=black,bold,bg=magenta'
 	fi
