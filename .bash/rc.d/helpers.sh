@@ -54,7 +54,7 @@ function mod-info-color {
 
 		declare -a names descs vals
 		local add_desc=false desc name IFS="$newline"
-		
+
 		while read line; do
 			if [[ "$line" =~ ^[[:space:]] ]]; then
 				desc+="$newline	$line"
@@ -67,7 +67,7 @@ function mod-info-color {
 			fi
 			add_desc=true
 		done < <(modinfo -p $mod 2>$null)
-		
+
 		$add_desc && descs+=("$desc")
 		for (( i=0; i<${#names[@]}; i++ )); do
 			(( "${#names[i]}" > 0 )) || continue

@@ -54,11 +54,11 @@ sh_load_status () {
   [ -n "$_this_script" ] && _this_script="[$_this_script]"
 
   # Leave status printed?
-  
+
   if [ "$DEBUG_LOCAL_HOOKS" -ge 2 ]; then
     debug="\n"
   fi
-  
+
   # \e[0K is clear to right
   if [ -n "$shell_interactive" ] && [ "$TERM" != 'dumb' ]; then
     _text="${_this_shell}${_this_script}: $*... "

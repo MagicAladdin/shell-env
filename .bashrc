@@ -9,7 +9,7 @@
 # Allow disabling of all meddling with the environment
 [ -n "$INHERIT_ENV" ] && return 0
 
-shopt -qs extglob
+#shopt -qs extglob
 
 # {{{ Environment
 
@@ -28,6 +28,23 @@ fi
 
 # }}}
 
+# {{{ Options
+
+# Bash won't get SIGWINCH if another process is in the foreground.
+# Enable checkwinsize so that bash will check the terminal size when
+# it regains control.  #65623
+# http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
+shopt -s checkwinsize
+
+# Disable completion when the input buffer is empty.  i.e. Hitting tab
+# and waiting a long time for bash to expand all of $PATH.
+shopt -s no_empty_cmd_completion
+
+# Enable history appending instead of overwriting when exiting.  #139609
+shopt -s histappend
+
+# }}}
+
 # {{{ Prevent PATH duplicates
 
 PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!x[$0]++' | sed "s/\(.*\).\{1\}/\1/")
@@ -36,7 +53,7 @@ PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!x[$0]++' | sed "s/\(.*\).\{1\}/\1/
 
 # {{{ Are we running an interactive shell?
 
-[[ -z "$shell_interactive" ]] || return
+[[ -z "$shell_interactive" ]] && return
 
 # }}}
 
@@ -87,16 +104,12 @@ fi
 
 # {{{ Init Direnv hook
 
-eval $(direnv hook bash)
+#eval $(direnv hook bash)
 
 # }}}
 
-# {{{ Preexec subshells
+#export __bp_enable_subshells="true"
 
-export __bp_enable_subshells="true"
-
-# }}}
-
-#: .bashrc ends # for debugging with -x
+: .bashrc ends # for debugging with -x
 
 # vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0:

@@ -55,11 +55,26 @@ gentoo_bash_prompt () {
     fi
 }
 
-if [[ "$EUID" == 0 ]]; then
-    gentoo_bash_prompt
-else
-    my_extravagant_bash_prompt
-fi
+# color: http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
+function prompt-clover-setup {
+	local TTY=$(tty | cut -b6-) uc
+	case "${EUID}" in
+		(0) uc="${fg[1]}";;
+		(*) uc="${fg[2]}";;
+	esac
+	PS1="\[${color[bold]}${fg[5]}\]-\[${fg[4]}\](\[${uc}\]\$·\[${fg[5]}\]\h:${TTY}\[${fg[4]}\]·\D{%m/%d}·\[${fg[5]}\]\A\[${fg[4]}\])-\[${fg[2]}\]»\[${color[none]}\] "
+	PS2="\[${color[bold]}${fg[5]}\]-\[${fg[2]}\]» \[${color[none]}\]"
+	PROMPT_DIRTRIM=3
+	TITLEBAR="\$:\w"
+}
+
+PROMPT_COMMAND=my_extravagant_bash_prompt
+
+#if [[ "$EUID" == 0 ]]; then
+#    gentoo_bash_prompt
+#else
+#    my_extravagant_bash_prompt
+#fi
 
 [[ -n "$SCHROOT_CHROOT_NAME" ]] && PS1="($SCHROOT_CHROOT_NAME) $PS1"
 
