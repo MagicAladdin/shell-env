@@ -104,11 +104,11 @@ fi
 
 # {{{ Init Direnv hook
 
-#eval $(direnv hook bash)
+eval $(direnv hook bash)
 
 # }}}
 
-#export __bp_enable_subshells="true"
+export __bp_enable_subshells="true"
 
 : .bashrc ends # for debugging with -x
 
