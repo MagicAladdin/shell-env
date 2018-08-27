@@ -21,11 +21,9 @@
 
 # {{{ Locales
 
-check_com locale && {
-  export LANG=en_US.UTF-8
-  export LC_COLLATE=C
-  unset LC_ALL
-}
+export LANG=en_US.UTF-8
+export LC_COLLATE=C
+unset LC_ALL
 
 # }}}
 
@@ -154,12 +152,14 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswi
 
 # {{{ Running shared hooks
 
-. $ZDOT_RUN_HOOKS .shared_env
+. $ZDOT_RUN_HOOKS .shared_env.d
 
 if [ -n "$shell_interactive" ]; then
   . $ZDOTDIR/.shared_rc
 fi
 
 shared_env_loaded=y
+
+# }}}
 
 # vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0:

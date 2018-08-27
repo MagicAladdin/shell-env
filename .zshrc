@@ -220,7 +220,7 @@ sh_load_status 'completion system'
 autoload -U complist
 autoload -U compinit && compinit -d $ZDOTDIR/.zcompdump
 
-# {{{ Completion options
+# {{{ Options
 
 setopt COMPLETE_IN_WORD     # complete from both ends of a word
 setopt ALWAYS_TO_END        # move cursor to the end of a completed word
@@ -242,8 +242,8 @@ zstyle ':completion::prefix-1:*' completer _complete
 zstyle ':completion:incremental:*' completer _complete _correct
 zstyle ':completion:predict:*' completer _complete
 
-zstyle ':completion:*:approximate-one:*'  max-errors 1
-zstyle ':completion:*:approximate-four:*' max-errors 4
+# allow one error for every three characters typed in approximate completer
+zstyle ':completion:*:approximate:' max-errors 'reply=( $((($#PREFIX+$#SUFFIX)/3 )) numeric )'
 
 # e.g. f-1.j<TAB> would complete to foo-123.jpeg
 zstyle ':completion:*:complete-extended:*' \
@@ -264,13 +264,6 @@ zstyle ':completion:*:complete:*'   cache-path ${ZDOTDIR:-${HOME}/.cache}
 #      /usr/src/linux/Documentation/fs
 zstyle ':completion:*' expand 'yes'
 zstyle ':completion:*' squeeze-slashes 'yes'
-
-# }}}
-
-# {{{ Approximate completer
-
-# allow one error for every three characters typed in approximate completer
-zstyle ':completion:*:approximate:' max-errors 'reply=( $((($#PREFIX+$#SUFFIX)/3 )) numeric )'
 
 # }}}
 
@@ -299,17 +292,16 @@ zstyle '*' single-ignored show
 # {{{ Menu completion
 
 # start menu completion only if it could find no unambiguous initial string
-zstyle ':completion:*:correct:*'        insert-unambiguous true
-zstyle ':completion:*:corrections'      format ' %F{green}-- %d (errors: %e) --%f'
-zstyle ':completion:*:correct:*'        original true
+zstyle ':completion:*:correct:*'    insert-unambiguous true
+zstyle ':completion:*:corrections'  format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:correct:*'    original true
 
 # activate color-completion
-zstyle ':completion:*:default'          list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*:*:cd:*'           tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:-tilde-:*'        group-order 'named-directories' 'path-directories' 'expand'
+zstyle ':completion:*:default'      list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:cd:*'       tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:-tilde-:*'    group-order 'named-directories' 'path-directories' 'expand'
 
 # automatically complete 'cd -<tab>' and 'cd -<ctrl-d>' with menu
-# INFO: maybe slow
 zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
 
 # insert all expansions for expand completer
@@ -403,26 +395,25 @@ zstyle ':completion:correct:'           prompt 'correct to: %e'
 
 # }}}
 
-# {{{ Ignore completion functions for commands you don't have:
+# {{{ Ignore functions we don't have
 
 zstyle ':completion::(^approximate*):*:functions' ignored-patterns '(_*|pre(cmd|exec)|prompt_*)'
 
 # }}}
 
 # {{{  Manuals
+
 zstyle ':completion:*:manuals'          separate-sections true
 zstyle ':completion:*:manuals.(^1*)'    insert-sections true
 
 # }}}
 
-# {{{ Add a special SUDO_PATH for completion of sudo & friends
+# {{{ Search path for sudo completion
 
-[[ $UID -eq 0 ]] || () {
-	local -T SUDO_PATH sudo_path
-	local -U sudo_path
-  sudo_path=($path {,/usr{,/local}}/sbin(N-/) $HOME/{.go/,.rust/,.local/,}bin)
-	zstyle ":completion:*:(su|sudo|sux|sudox):*" environ PATH="$SUDO_PATH"
-}
+zstyle ':completion:*:sudo:*' command-path /usr/local/{bin,sbin} \
+                                           /usr/{bin,sbin}       \
+                                           /{bin,sbin}           \
+                                           ${ZDOTDIR}/bin
 
 # }}}
 
@@ -432,7 +423,8 @@ zstyle ':completion:*' special-dirs ..
 
 # }}}
 
-# {{{ rehash on completion so new installed program are found automatically:
+# {{{ Rehash on completion ...
+# ... so new installed programs are found automatically
 
 function _force_rehash () {
     (( CURRENT == 1 )) && rehash
@@ -446,6 +438,7 @@ function _force_rehash () {
 zstyle -e ':completion:*' completer '
 if [[ $_last_try != "$HISTNO$BUFFER$CURSOR" ]] ; then
     _last_try="$HISTNO$BUFFER$CURSOR"
+
     reply=(_complete _match _ignored _prefix _files)
 else
     if [[ $words[1] == (rm|mv) ]] ; then
@@ -454,6 +447,16 @@ else
         reply=(_oldlist _expand _force_rehash _complete _ignored _correct _approximate _files)
     fi
 fi'
+
+# }}}
+
+# {{{ Hostnames
+
+zstyle -e ':completion:*:hosts' hosts 'reply=(
+  ${=${=${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//\]:[0-9]*/ }//,/ }//\[/ }
+  ${=${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
+  ${=${${${${(@M)${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}}
+)'
 
 # }}}
 
@@ -467,50 +470,6 @@ unset compcom
 
 # }}}
 
-# {{{ Usernames
-
-run_hooks .zsh/users.d
-zstyle ':completion:*' users $zsh_users
-
-# }}}
-
-# {{{ Hostnames
-
-# Extract hosts from /etc/hosts
-# ~~ no glob_subst -> don't treat contents of /etc/hosts like pattern
-# (f) shorthand for (ps:\n:) -> split on \n ((p) enables recognition of \n etc.)
-# %%\#* -> remove comment lines and trailing comments
-# (ps:\t:) -> split on tab
-# ##[:blank:]#[^[:blank:]]# -> remove comment lines
-
-: ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}}
-
-  # _ssh_known_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*})
-
-zsh_hosts=(
-    "$_etc_hosts[@]"
-    localhost
-)
-
-run_hooks .zsh/hosts.d
-zstyle ':completion:*' hosts $zsh_hosts
-
-# }}}
-
-# {{{ (user, host) account pairs
-
-run_hooks .zsh/accounts.d
-zstyle ':completion:*:my-accounts'    users-hosts "$my_accounts[@]"
-zstyle ':completion:*:other-accounts' users-hosts "$other_accounts[@]"
-
-# }}}
-
-# {{{ pdf
-
-compdef _pdf pdf
-
-# }}}
-
 # }}}
 
 # {{{ Miscellaneous
@@ -520,7 +479,7 @@ sh_load_status 'miscellaneous'
 # {{{ ls colors
 
 (( $+commands[dircolors] )) && () {
-    if [[ -r "~/.dir_colors" ]] {
+    if [[ -r "$HOME/.dir_colors" ]] {
         eval $(dircolors -b ~/.dir_colors)
     } elif [[ -r "/etc/DIR_COLORS" ]] {
         eval $(dircolors -b /etc/DIR_COLORS)
@@ -599,7 +558,5 @@ if [[ -n "$ZSHRC_PROFILE_RC" ]]; then
 fi
 
 # }}}
-
-[[ -r "$HOME/.aliases.local" ]] && source ~/.aliases.local
 
 # vim:fenc=utf-8:ft=zsh:ts=2:sts=0:sw=2:et:fdm=marker:foldlevel=0:

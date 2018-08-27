@@ -10,7 +10,7 @@
 # than ! [ -e foo ] ...
 
 # Allow disabling of entire environment suite
-[ -n "$shared_rc_loaded" ] && return 0
+[ -n "$shared_rc_loaded" ] && return
 
 # {{{ Pager
 
