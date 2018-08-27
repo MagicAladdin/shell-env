@@ -15,13 +15,13 @@ sh_load_status .zshrc
 ZSHRC_SKIP_ZMORPHO=
 
 # 2. https://github.com/zdharma/history-search-multi-word
-ZSHRC_SKIP_HISTORY_SEARCH_MULTI_WORD=
+ZSHRC_SKIP_HISTORY_SEARCH=
 
 # 3. https://github.com/zdharma/fast-syntax-highlighting
-ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING=
+ZSHRC_SKIP_HIGHLIGHTING=
 
 # 4. https://github.com/zsh-users/zsh-autosuggestions
-ZSHRC_SKIP_AUTOSUGGESTIONS=y
+ZSHRC_SKIP_AUTOSUGGESTIONS=
 
 ZSHRC_KEEP_FUNCTIONS=
 

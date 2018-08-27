@@ -164,7 +164,7 @@ zshrc_highlight_styles() {
 	fi
 }
 
-if [[ -z "${ZSHRC_SKIP_FAST_SYNTAX_HIGHLIGHTING:++}" ]] && is-at-least 4.3.9
+if [[ -z "${ZSHRC_SKIP_HIGHLIGHTING:++}" ]] && is-at-least 4.3.9
 then  zshrc_fast_syntax_highlighting
 fi
 
