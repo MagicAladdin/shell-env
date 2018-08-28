@@ -1,24 +1,33 @@
 # $Id: ~/.shared_rc.d/pass-teaming.sh wandsas 2018/08/20
 
-info () {
-	printf '\n\033[1;36mINFO\033[0m %s\n' "$@" >&2
+_info () {
+  printf '\033[1;36m%s\033[0m %s\n' "$@" >&2
 }
 
-pass-default () {
-    export PASSWORD_STORE_DIR=$HOME/.pass-wandsas
-    info PASSWORD_STORE_DIR=$PASSWORD_STORE_DIR
+pass-store-info () {
+  _info PASSWORD_STORE_DIR $PASSWORD_STORE_DIR
 }
 
-pass-android () {
-    export PASSWORD_STORE_DIR=$HOME/.pass-android
-    info PASSWORD_STORE_DIR=$PASSWORD_STORE_DIR
+pass-store-wandsas () {
+  export PASSWORD_STORE_DIR=$HOME/.pass-wandsas
+  pass-store-info
 }
 
-pass-aladdin () {
-    export PASSWORD_STORE_DIR=$HOME/.pass-aladdin
-    info PASSWORD_STORE_DIR=$PASSWORD_STORE_DIR
+pass-store-android () {
+  export PASSWORD_STORE_DIR=$HOME/.pass-android
+  pass-store-info
 }
 
-[[ -z "$PASSWORD_STORE_DIR" ]] && pass-default
+passtoggle () {
+  if [[ -z "$PASSWORD_STORE_DIR" ]]
+  then    pass-store-wandsas
+  elif [[ "$PASSWORD_STORE_DIR" == "*wandsas*" ]]
+  then    pass-store-android
+  elif [[ "$PASSWORD_STORE_DIR" == "*android*" ]]
+  then    pass-store-wandsas
+  else    die "Unknown password-store-dir $PASSWORD_STORE_DIR"
+  fi
+}
 
-# vim:fenc=utf-8:ft=sh:
+
+# vim:fenc=utf-8:ft=sh:ts=2:sts=2:sw=2:et:
