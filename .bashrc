@@ -9,9 +9,9 @@
 # Allow disabling of all meddling with the environment
 [ -n "$INHERIT_ENV" ] && return 0
 
-#shopt -qs extglob
+shopt -qs extglob
 
-# {{{ Environment
+# {{{ User Environment
 
 [ -r ~/.bashenv ] && . ~/.bashenv
 
@@ -19,7 +19,7 @@
 
 sh_load_status .bashrc
 
-# {{{ source /etc/bashrc
+# {{{ Systen environment
 
 if [ -f /etc/bashrc ]; then
     sh_load_status '/etc/bashrc'

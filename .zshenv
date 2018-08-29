@@ -22,7 +22,7 @@ export ZDOTDIR="${ZDOTDIR:-$HOME}"
 
 # }}}
 
-# {{{ Sourcing .shared_env
+# {{{ Shared environment
 
 [[ -r $ZDOTDIR/.shared_env ]] && . $ZDOTDIR/.shared_env
 
@@ -32,8 +32,12 @@ sh_load_status '.zshenv already started before .shared_env'
 
 setopt extended_glob
 
+# {{{ Umask
+
 # 077 would be more secure, but 022 is generally quite realistic
 umask 022
+
+# }}}
 
 # {{{ path / manpath
 

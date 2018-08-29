@@ -39,7 +39,7 @@ my_extravagant_bash_prompt () {
         RESET="\033[m"
     fi
 
-    PS1="\[${BOLD}${MAGENTA}\]\u \[$WHITE\]at \[$ORANGE\]\h \[$WHITE\]in \[$GREEN\]\w\[$WHITE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$PURPLE\]\$(parse_git_branch)\[$WHITE\]\n\$ \[$RESET\]"
+    PS1="\[${BOLD}${MAGENTA}\]\u \[$WHITE\]at \[$ORANGE\]\h \[$WHITE\]in \[$GREEN\]\w\[$WHITE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$PURPLE\]\$(parse_git_branch)\[$WHITE\]\n» \[$RESET\]"
 }
 
 gentoo_bash_prompt () {
@@ -70,11 +70,10 @@ function prompt-clover-setup {
 
 PROMPT_COMMAND=my_extravagant_bash_prompt
 
-#if [[ "$EUID" == 0 ]]; then
-#    gentoo_bash_prompt
-#else
-#    my_extravagant_bash_prompt
-#fi
+if [[ "$EUID" == 0 ]]
+then    PROMPT_COMMAND=gentoo_bash_prompt
+else    PROMPT_COMMAND=my_extravagant_bash_prompt
+fi
 
 [[ -n "$SCHROOT_CHROOT_NAME" ]] && PS1="($SCHROOT_CHROOT_NAME) $PS1"
 
