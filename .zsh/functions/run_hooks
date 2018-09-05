@@ -112,11 +112,6 @@ iterate_hooks () {
 
     [ -d "$zdot_hook_d" ] || break
 
-#     if ! cd "$zdot_hook_d"; then
-#       echo "BUG?  Couldn't cd to $zdot_hook_d" >&2
-#       return 1
-#     fi
-
     hostnick=$(cat $ZDOTDIR/.localhost-nickname)
     : ${hostnick:=unknown}
 
@@ -158,8 +153,7 @@ iterate_hooks () {
         uid-*)
           uid="${dirent#uid-}"
           if [ "$uid" = 'OWNER' ]; then
-            uid=$( stat -c '%U' "$zdot_hook_path" ) # portable?
-#            uid=$( command ls -l "$zdot_hook_path" | awk '{print $3}' ) # sucks
+            uid=$( stat -c '%U' "$zdot_hook_path" )
           fi
           if [ "$USERNAME" != "$uid" ]; then
             [ "$DEBUG_LOCAL_HOOKS" -ge 4 ] && \
@@ -202,28 +196,18 @@ iterate_hooks () {
 }
 
 run_hooks () {
-  if [ $# != 1 ]; then
+  if [[ "$#" != 1 ]]; then
     echo "Usage: run_hooks <hookname>" >&2
     return 1
   fi
 
-  if [ "$1" = 'DEFUN' ]; then
-    # We only want to define the functions above, not do anything.
-    # This is for the benefit of find_hooks.
-    return 0
-  fi
-  
   iterate_hooks source "$@"
 }
 
 # Ensure we have sh_load_status.  It's missing when an X session starts up.
 if type sh_load_status >/dev/null 2>&1; then
-#if [ -z "$shared_env_loaded" ]; then
   :
 else
-  # Catch 22, this would go into infinite recursion:
-  # . ${zdotdir:-$HOME}/.shared_env
-
   sh_load_status () {
     # This should only ever log to .xsession-my-errors anyway
     echo "$0: $*"
@@ -231,3 +215,5 @@ else
 fi
 
 run_hooks "$@"
+
+# vim:fenc=utf-8:ft=zsh:ts=2:sts=0:sw=2:et:

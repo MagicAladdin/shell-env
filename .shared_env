@@ -13,20 +13,6 @@
 
 [[ -n "$shared_env_loaded" ]] && return
 
-# {{{ System profile
-
-[[ -r "/etc/profile" ]] && source /etc/profile
-
-# }}}
-
-# {{{ Locales
-
-export LANG=en_US.UTF-8
-export LC_COLLATE=C
-unset LC_ALL
-
-# }}}
-
 # {{{ Are we interactive?
 
 case "$-" in
@@ -88,8 +74,7 @@ sh_load_status .shared_env
 zdotdir=${ZDOTDIR:-$HOME}
 ZDOTDIR="$zdotdir"
 ZDOT_RUN_HOOKS="$ZDOTDIR/.zsh/functions/run_hooks"
-ZDOT_FIND_HOOKS="$ZDOTDIR/.zsh/functions/find_hooks"
-export ZDOTDIR ZDOT_RUN_HOOKS ZDOT_FIND_HOOKS
+export ZDOTDIR ZDOT_RUN_HOOKS
 
 # Define a search path to be used by run_hooks
 if [ "$ZDOTDIR" = "$HOME" ]; then
@@ -107,6 +92,21 @@ export ZDOTDIRPATH ZDOTDIRREVPATH
 export ZDOTUSER
 
 # }}}
+
+pathmunge () {
+    if ! echo $PATH | /bin/egrep -q "(^|:)$1($|:)" ; then
+        if [ "$2" = "after" ] ; then
+            PATH=$PATH:$1
+        else
+            PATH=$1:$PATH
+        fi
+    fi
+}
+
+check_com () {
+    [ "$#" != 1 ] && die "Usage: ${0##*/} <command>"
+    command -v $1 >/dev/null 2>&1 && return 0 || return 1
+}
 
 # {{{ Environment variables
 
@@ -151,7 +151,6 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswi
 # }}}
 
 # {{{ Running shared hooks
-
 . $ZDOT_RUN_HOOKS .shared_env.d
 
 if [ -n "$shell_interactive" ]; then

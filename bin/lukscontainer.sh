@@ -3,7 +3,7 @@
 BASEDIR=$(xdg-user-dir DOCUMENTS)
 
 open_lukscontainer () {
-    sudo cryptsetup luksOpen ${BASEDIR}/.lukscontainer.img lukscontainer
+    sudo cryptsetup luksOpen ${BASEDIR}/lukscontainer.img lukscontainer
     install -m 755 -d ${BASEDIR}/lukscontainer
     sudo chown wandsas:wandsas ${BASEDIR}/lukscontainer
     sudo mount /dev/mapper/lukscontainer ${BASEDIR}/lukscontainer

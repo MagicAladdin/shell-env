@@ -542,7 +542,7 @@ unset TMOUT
 
 # }}}
 
-# {{{ Specific to local setups
+# {{{ Run hooks
 
 sh_load_status 'local hooks'
 
