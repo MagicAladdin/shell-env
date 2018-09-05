@@ -10,7 +10,6 @@
 [ -n "$INHERIT_ENV" ] && return
 
 shopt -qs extglob
-shopt -qs nullglob
 
 # {{{ User Environment
 
