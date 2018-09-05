@@ -1,0 +1,34 @@
+#!/bin/sh
+
+start_privoxy () {
+  docker run -d \
+		--restart always \
+		--link torproxy:torproxy \
+		-p 8118:8118 \
+		--name privoxy \
+		wandsas/privoxy
+}
+
+start_tor () {
+  docker run -d \
+	  --name torproxy \
+		--hostname torproxy \
+		--restart always \
+		-p 9050:9050 \
+		wandsas/torproxy
+}
+
+check_tor () {
+  curl --socks http://10.0.6.10:9050 \
+		-L https://check.torproject.org/api/ip
+}
+
+main (){
+  start_tor
+  start_privoxy
+  check_tor
+}
+
+main "$@"
+
+# vim:fenc=utf-8:ft=sh:ts=2:sts=0:sw=2:et:

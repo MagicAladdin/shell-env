@@ -7,9 +7,10 @@
 : .bashrc starts # for debugging with -x
 
 # Allow disabling of all meddling with the environment
-[ -n "$INHERIT_ENV" ] && return 0
+[ -n "$INHERIT_ENV" ] && return
 
 shopt -qs extglob
+shopt -qs nullglob
 
 # {{{ User Environment
 
