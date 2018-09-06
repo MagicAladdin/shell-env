@@ -13,14 +13,6 @@ CUT() {
 	eval "${1:-REPLY}=$(echo "$2" | cut -d$3 -f${4:-:} $5)"
 }
 
-# @DESCRIPTION: Handle scripts fatal error
-# @ARG: <msg>
-die() {
-	local ret=$?
-	[ -n "$@" ] && msg -e "$@"
-	exit $ret
-}
-
 # @FUNCTION: Print begin message to stdout
 # @ARG: <msg>
 begin() {
@@ -205,7 +197,7 @@ dohook() {
 # @ARG: <module(s)|group>
 RMMOD() {
 	if [ -f "$confdir/module-$1" ]; then
-		while read _mod; do
+		while read _mod; do 
 			debug rmmod -q $_mod
 		done <$confdir/module-$1
 	else
@@ -217,7 +209,7 @@ RMMOD() {
 # @ARG: <module(s)|group>
 MODPROBE() {
 	if [ -f "$confdir/module-$1" ]; then
-		while read _mod; do
+		while read _mod; do 
 			debug modprobe -q $_mod
 		done <$confdir/module-$1
 	else
@@ -280,7 +272,7 @@ blk() {
 		fi
 	}
 	BLK "$1"
-
+	
 	if ! [ -n "$_blk" -a -b "$_blk" ]; then
 		msg -i "Insert $1 block device"
 		sleep 1
@@ -382,7 +374,7 @@ get_dev() {
 # @FUNCTION: Close dm-crypt mapping
 # @ARG: <map>
 dmclose() {
-	local IFS="${IFS}:"
+	local IFS="${IFS}:" 
 	for _p in $@; do
 		debug cryptsetup close ${_p%-*}
 	done
@@ -518,7 +510,7 @@ mdopen() {
 	if [ -n "$_uuid" -o -n "$_devices" ]; then
 		$CHECK_ENV && debug -d check_bin mdadm
 		debug MODPROBE raid
-
+	
 		if [ -n "$_uuid" ]; then
 			echo ARRAY $_dev $_uuid >>/etc/mdadm.conf
 		else
@@ -581,7 +573,7 @@ squashd() {
 		_DIR="${_squashdir#/}/${_dir#/}" _dir="${_dir#/}"
 		grep -sqw $_fs:$_dir /proc/mounts && continue
 		[ -f $_DIR.squashfs ] || continue
-
+	
 		case "$_fs" in
 			(aufs)
 				mkdir -p -m 0755 $_DIR/rw $_DIR/rr $_dir
