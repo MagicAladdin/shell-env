@@ -2,7 +2,7 @@
 .zsh/functions.zwc
 .zsh/functions.zwc.old
 
-.zsh/5.5.1/my-functions.zwc
-.zsh/5.5.1/my-functions.zwc.old
-.zsh/5.5.1/site-functions.zwc
-.zsh/5.5.1/site-functions.zwc.old
+.zsh/5.*/my-functions.zwc
+.zsh/5.*/my-functions.zwc.old
+.zsh/5.*/site-functions.zwc
+.zsh/5.*/site-functions.zwc.old
