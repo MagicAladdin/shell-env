@@ -9,9 +9,15 @@
 # than ! [ -e foo ] ...
 
 # Allow disabling of entire environment suite
-[[ -n "$INHERIT_ENV" ]] && return
+[[ -n "$INHERIT_ENV" ]] && return 0
 
-[[ -n "$shared_env_loaded" ]] && return
+[[ -n "$shared_env_loaded" ]] && return 0
+
+# {{{ System Environment
+
+[[ -r "/etc/profile" ]] && source /etc/profile
+
+# }}}
 
 # {{{ Are we interactive?
 

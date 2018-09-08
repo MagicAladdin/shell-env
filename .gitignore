@@ -1,4 +1,11 @@
-
+.bash_history
+.zcompcache
+.zcompdump
+.zcompdump.zwc
+.zcompdump.zwc.old
+.zdirs
+.zdotuser
+.zshhistory
 .zsh/functions.zwc
 .zsh/functions.zwc.old
 

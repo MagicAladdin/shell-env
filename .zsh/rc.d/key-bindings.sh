@@ -64,9 +64,12 @@ function insert-datestamp () { LBUFFER+=${(%):-'%D{%Y-%m-%d}'}; }
 zle -N insert-datestamp
 
 
-#
-# ZLE-widget my-extended-wordchars
-#
+# Better word navigation
+
+# Remember, WORDCHARS is defined as a 'list of non-alphanumeric
+# characters considered part of a word by the line editor'.
+
+# Elsewhere we set it to the empty string.
 
 my_extended_wordchars='*?_-.[]~=&;!#$%^(){}<>:@,\\';
 my_extended_wordchars_space="${my_extended_wordchars} "
@@ -122,6 +125,26 @@ bindkey "^[B" backward-to-space
 bindkey "^[F" forward-to-space
 bindkey "^[^b" backward-to-/
 bindkey "^[^f" forward-to-/
+
+zle -N kill-region-or-backward-word
+zle -N kill-region-or-backward-big-word
+
+# }}}
+# {{{ kill-big-word
+
+kill-big-word () {
+    local WORDCHARS="${_my_extended_wordchars_slash}"
+    zle .kill-word
+}
+zle -N kill-big-word
+
+
+zle -N transpose-big-words
+
+zle -N magic-forward-char
+zle -N magic-forward-word
+
+zle -N incremental-complete-word
 
 #
 # Helper functions for key-bindings
