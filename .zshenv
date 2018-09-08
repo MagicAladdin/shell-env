@@ -94,7 +94,7 @@ export RUBYLIB
 
 rubylib=(
     $HOME/.local/lib/ruby/{site_ruby,}(N)
-
+    usr/local/lib/ruby(N)
     $rubylib
     )
 
@@ -117,7 +117,7 @@ done
 
 # }}}
 
-# {{{ Running hooks specific to hosts
+# {{{ Running hooks
 
 run_hooks .zsh/env.d
 

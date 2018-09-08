@@ -35,7 +35,7 @@ export LESSKEY="$ZDOTDIR/.less"
 
 # }}}
 
-# {{{ Direnv chdir hooks
+# {{{ Direnv hooks
 
 if [[ -n "$BASH_VERSION" ]]
 then    eval "$(direnv hook bash)"

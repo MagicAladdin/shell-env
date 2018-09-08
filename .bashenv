@@ -15,9 +15,7 @@
 # Allow disabling of all meddling with the environment
 [ -n "$INHERIT_ENV" ] && return 0
 
-shell=bash
-
-[ -r ${ZDOTDIR:-$HOME}/.shared_env ] && . ${ZDOTDIR:-$HOME}/.shared_env
+shell=[ -r ${ZDOTDIR:-$HOME}/.shared_env ] && . ${ZDOTDIR:-$HOME}/.shared_env
 
 sh_load_status .bashenv
 

@@ -101,6 +101,10 @@ die () {
 	exit "$?"
 }
 
+einfo () {
+	printf '\n\033[1;36m> %s\033[0m\n' "$@" >&2
+}
+
 pathmunge () {
     if ! echo $PATH | /bin/egrep -q "(^|:)$1($|:)" ; then
         if [ "$2" = "after" ] ; then

@@ -13,7 +13,7 @@ shopt -qs extglob
 
 # {{{ User Environment
 
-[ -r ~/.bashenv ] && . ~/.bashenv
+[ -r ${ZDOTDIR:-$HOME}/.shared_env ] && . ${ZDOTDIR:-$HOME}/.shared_env
 
 # }}}
 
@@ -99,12 +99,6 @@ fi
 # {{{ Running bash hooks
 
 . $ZDOT_RUN_HOOKS .bash/rc.d
-
-# }}}
-
-# {{{ Init Direnv hook
-
-eval $(direnv hook bash)
 
 # }}}
 
