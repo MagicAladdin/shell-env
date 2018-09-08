@@ -10,42 +10,47 @@
 # than ! [ -e foo ] ...
 
 # Allow disabling of entire environment suite
-[ -n "$shared_rc_loaded" ] && return
+[ -n "$shared_rc_loaded" ] && return 0
 
-# {{{ Pager
+# {{{ Environment variables
 
-#export PERLDOC_PAGER='less -R'
-
-export PAGER='less'
+export EDITOR=nvim
+#export BROWSER=lynx
+export PAGER=less
 
 export LESS='-a -h100 -i -j15 -M -q -R -W -y100 -X'
-
-export LESSOPEN="|$ZDOTDIR/bin/lesspipe.sh %s"
-
+export LESSOPEN='|lesspipe %s'
 # Make sure synced with .cfg-post.d/shell-env
 export LESSKEY="$ZDOTDIR/.less"
 
-# }}}
+export GTK2_RC_FILES=${XDG_CONFIG_HOME:-$HOME/.config}/gtk-2.0/gtkrc
+export QT_STYLE_OVERRIDE="GTK+"
+export NO_AT_BRIDGE=1
 
-# {{{ COLUMNS
+export LPASS_AGENT_TIMEOUT=0
+export LPASS_DISABLE_PINENTRY=1
+export PASSWORD_STORE_ENABLE_EXTENSIONS=true
+export SUDO_ASKPASS=/usr/bin/x11-ssh-askpass
 
-# Some programs find this handy.  Unfortunately xterm gets confused
-# when launched with it set ...
 [ "${COLUMNS:-0}" -gt 0 ] && export COLUMNS
 
 # }}}
 
 # {{{ Direnv hooks
 
-if [[ -n "$BASH_VERSION" ]]
-then    eval "$(direnv hook bash)"
-elif [[ -n "$ZSH_VERSION" ]]
-then    eval "$(direnv hook zsh)"
+if [[ -n "$BASH_VERSION" ]]; then
+  eval "$(direnv hook bash)"
+elif [[ -n "$ZSH_VERSION" ]]; then
+  eval "$(direnv hook zsh)"
 fi
 
 # }}}
 
+# {{{ Run interactive hooks
+
 . $ZDOT_RUN_HOOKS .shared/rc.d
+
+# }}}
 
 shared_rc_loaded=y
 

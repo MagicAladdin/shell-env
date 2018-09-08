@@ -197,7 +197,7 @@ autoload -U promptinit && promptinit
 setopt prompt_subst
 
 if [[ `id -u` = 0 ]] {
-    prompt gentoo      # root's prompt
+    prompt wandsas      # root's prompt
 } else {
     prompt wandsas2
 }

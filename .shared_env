@@ -122,46 +122,65 @@ export ZDOTUSER
 
 # }}}
 
-# {{{ Environment variables
-
-export EDITOR=nvim
-export PAGER=less
-#export BROWSER=lynx
+# {{{ freedesktop.org
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 
-export GOPATH=${GOPATH:-~/.go}
-export GOTMP=/tmp
+# }}}
+
+# {{{ Go
+
+[[ -d "$HOME/.go" ]] && {
+  export GOPATH=${GOPATH:-~/.go}
+  export GOTMP=/tmp
+  pathmunge $GOPATH/bin
+}
 
 export GHQ_ROOT=$HOME/repos
 
-export PYTHONPATH=$HOME/.local/lib64/python3.6/site-packages:$PYTHONPATH
+# }}}
 
-export NODE_PATH=${XDG_CONFIG_HOME:-$HOME/.config}/node_modules
+# {{{ Python libraries
 
-export GTK2_RC_FILES=${XDG_CONFIG_HOME:-$HOME/.config}/gtk-2.0/gtkrc
-export QT_STYLE_OVERRIDE="GTK+"
-export NO_AT_BRIDGE=1
+export PYTHONPATH=$HOME/.local/lib64/python3.6/site-packages:/usr/local/lib64/python3.6/site-packages:$PYTHONPATH
 
-export LPASS_AGENT_TIMEOUT=0
-export LPASS_DISABLE_PINENTRY=1
-export PASSWORD_STORE_ENABLE_EXTENSIONS=true
-export SUDO_ASKPASS=/usr/bin/x11-ssh-askpass
+[[ -d "$HOME/.local/bin" ]] && pathmunge $HOME/.local/bin
+
+# }}}
+
+# {{{ Java
 
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 
 # }}}
 
-# {{{ PATH
+# {{{ Rust
 
-[[ -d "$GOPATH/bin" ]]      && pathmunge $GOPATH/bin
-[[ -d "$HOME/.rust/bin" ]]  && pathmunge $HOME/.rust/bin
 [[ -d "$HOME/.cargo/bin" ]]  && pathmunge $HOME/.cargo/bin
+
+# }}}
+
+# {{{ Node.js
+
+[[ -d "$HOME/.npm-global" ]] && {
+  export npm_config_prefix=$HOME/.npm-global
+  export NODE_PATH=$npm_config_prefix/lib/node_modules
+  pathmunge $HOME/.npm-global/bin
+}
+
+# }}}
+
+# {{{ Emacs
+
 [[ -d "$HOME/.cask/bin" ]]  && pathmunge $HOME/.cask/bin
-[[ -d "$HOME/.local/bin" ]] && pathmunge $HOME/.local/bin
-[[ -d "$HOME/bin" ]]        && pathmunge $HOME/bin
+
+# }}}
+
+# {{{ User's bin
+
+pathmunge $HOME/bin
 
 # }}}
 

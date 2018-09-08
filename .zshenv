@@ -80,8 +80,8 @@ typeset -TU PYTHONPATH pythonpath
 export PYTHONPATH
 
 pythonpath=(
-    $HOME/.local/lib64/python{2.*,3.*}/site-packages(N)
-    /usr/local/lib64/python{2.*,3.*}/sitepackages(N)
+    $HOME/.local/lib64/python3.6/site-packages(N)
+    /usr/local/lib64/python3.6/site-packages(N)
     $pythonpath
     )
 
