@@ -1,8 +1,5 @@
 # $Id: ~/.zshenv wandsas 2018/08/10
 
-# Best viewed in emacs folding mode (folding.el).
-# (That's what all the # {{{ and # }}} are for.)
-#
 # This gets run even for non-interactive shells;
 # keep it as fast as possible.
 #
@@ -11,26 +8,31 @@
 # take effect for bash and ksh.
 
 # Allow disabling of entire environment suite
-[[ -n "$INHERIT_ENV" ]] && return
+[[ -n "$INHERIT_ENV" ]] && return 0
 
 # Stop bad system-wide scripts interfering.
 setopt NO_global_rcs
 
 # {{{ ZDOTDIR
 
-export ZDOTDIR="${ZDOTDIR:-$HOME}"
+# ZDOTDIR is a zsh-ism but it's a good concept so we generalize it to
+# the other shells.
+
+# This allows us to have a good set of .*rc files etc. in one place
+# and to be able to reuse that from a different account (e.g. root).
+
+zdotdir=${ZDOTDIR:-$HOME}
+export ZDOTDIR="$zdotdir"
 
 # }}}
 
-# {{{ Shared environment
+[[ -e $ZDOTDIR/.shared_env ]] && . $ZDOTDIR/.shared_env
 
-[[ -r $ZDOTDIR/.shared_env ]] && . $ZDOTDIR/.shared_env
-
-# }}}
-
-sh_load_status '.zshenv already started before .shared_env'
+sh_load_status ".zshenv already started before .shared_env"
 
 setopt extended_glob
+
+sh_load_status "search paths"
 
 # {{{ Umask
 
@@ -39,15 +41,13 @@ umask 022
 
 # }}}
 
-# {{{ path / manpath
-
-sh_load_status 'search paths'
+# {{{ prevent duplicates in path variables
 
 typeset -U PATH path
 export PATH
 
 path=(
-    $ZDOTDIR/{.local/,.go/,.cargo/,.cask/,}bin
+    $zdotdir/{.local/,.go/,.cargo/,.cask/,}bin
     $path
     )
 
@@ -94,7 +94,7 @@ export RUBYLIB
 
 rubylib=(
     $HOME/.local/lib/ruby/{site_ruby,}(N)
-    usr/local/lib/ruby(N)
+    /usr/local/lib/ruby(N)
     $rubylib
     )
 
@@ -117,7 +117,7 @@ done
 
 # }}}
 
-# {{{ Running hooks
+# {{{ Specific to hosts
 
 run_hooks .zsh/env.d
 

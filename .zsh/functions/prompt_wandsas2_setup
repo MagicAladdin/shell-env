@@ -15,38 +15,9 @@ you can specify the `8bit' option to use 8-bit replacements for the
 EOF
 }
 
-function prompt_wandsas2_precmd {
-	autoload -Uz vcs_info
-
-	zstyle ':vcs_info:*' enable bzr hg git svn
-	zstyle ':vcs_info:*:prompt:*' check-for-changes true
-	zstyle ':vcs_info:*:prompt:*' unstagedstr '*'
-	zstyle ':vcs_info:*:prompt:*' actionformats '%a'
-	zstyle ':vcs_info:*:prompt:*' formats '·%s:%b%u'
-	zstyle ':vcs_info:*:prompt:*' branchformat '%b'
-	zstyle ':vcs_info:*:prompt:*' nvcsformats ''
-	vcs_info 'prompt'
-
-	# Truncate the path if it's too long
-	local offset width
-	case $TERM {
-		(xterm*|*rxvt*|*screen*) offset=2;;
-		(linux)         offset=1;;
-		(*)             offset=0;;
-	}
-	(( width = $COLUMNS - $offset ))
-
-	local promptsize=${#${(%):--(%#·%m/%l·%D{%m/%d}:%H:%M)--(${(%)vcs_info_msg_0_[1,15]})--}}
-	local pwdsize=${#${(%):-%~}}
-
-	if (( ($promptsize + $pwdsize) > $width )) {
-		(( prompt_color[len] = $width - $promptsize ))
-	} else {
-		prompt_color[fil]=\${(l.$(( $width - $promptsize - $pwdsize ))..$prompt_color[bar].)}
-	}
-}
-
 function prompt_wandsas2_setup {
+	setopt PROMPT_SUBST
+  prompt_opts=(cr subst percent)
   typeset -A -g prompt_color
 
 	# Load required function
@@ -55,7 +26,6 @@ function prompt_wandsas2_setup {
 	# Add required hook-functions
 	add-zsh-hook precmd  prompt_wandsas2_precmd
 
-	setopt PROMPT_SUBST
 	setopt EXTENDED_GLOB
 	unsetopt BRACE_CCL
 
@@ -115,6 +85,36 @@ function prompt_wandsas2_setup {
 	PS2+='$prompt_color[c6]$prompt_color[s-in]$prompt_color[bar]$prompt_color[s-out]$prompt_color[c0] '
 }
 
+function prompt_wandsas2_precmd {
+	autoload -Uz vcs_info
+
+	zstyle ':vcs_info:*' enable bzr hg git svn
+	zstyle ':vcs_info:*:prompt:*' check-for-changes true
+	zstyle ':vcs_info:*:prompt:*' unstagedstr '*'
+	zstyle ':vcs_info:*:prompt:*' actionformats '%a'
+	zstyle ':vcs_info:*:prompt:*' formats '·%s:%b%u'
+	zstyle ':vcs_info:*:prompt:*' branchformat '%b'
+	zstyle ':vcs_info:*:prompt:*' nvcsformats ''
+	vcs_info 'prompt'
+
+	# Truncate the path if it's too long
+	local offset width
+	case $TERM {
+		(xterm*|*rxvt*|*screen*) offset=2;;
+		(linux)         offset=1;;
+		(*)             offset=0;;
+	}
+	(( width = $COLUMNS - $offset ))
+
+	local promptsize=${#${(%):--(%#·%m/%l·%D{%m/%d}:%H:%M)--(${(%)vcs_info_msg_0_[1,15]})--}}
+	local pwdsize=${#${(%):-%~}}
+
+	if (( ($promptsize + $pwdsize) > $width )) {
+		(( prompt_color[len] = $width - $promptsize ))
+	} else {
+		prompt_color[fil]=\${(l.$(( $width - $promptsize - $pwdsize ))..$prompt_color[bar].)}
+	}
+}
 
 prompt_wandsas2_setup "$@"
 

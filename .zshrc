@@ -94,7 +94,7 @@ setopt PATH_DIRS                # Perform a path search even on command names wi
 
 # }}}
 
-# {{{ Modules
+# {{{ Zsh-modules
 
 # See man zshmodules
 
@@ -116,21 +116,16 @@ zle -N self-insert url-quote-magic
 # Helping system
 autoload -Uz run-help run-help-sudo run-help-git run-help-openssl run-help-ip
 
-# Compile functions
-check_com precompile && () {
-    autoload -U precompile && precompile
-}
+# For extensions, we use the defaults of zsh-mime-setup
+# see /etc/mailcap, /etc/mime.types for system configs
+# and ~/.mailcap, ~/.config/mimeapps.list for user configs.
+zstyle ":mime:*" current-shell true
+#zsh-mime-setup
 
 # Don't correct these commands
 alias man='nocorrect man'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv'
-
-# For extensions, we use the defaults of zsh-mime-setup
-# see /etc/mailcap, /etc/mime.types for system configs
-# and ~/.mailcap, ~/.config/mimeapps.list for user configs.
-zstyle ":mime:*" current-shell true
-zsh-mime-setup
 
 # }}}
 
@@ -202,11 +197,9 @@ autoload -U promptinit && promptinit
 setopt prompt_subst
 
 if [[ `id -u` = 0 ]] {
-    prompt wandsas      # root's prompt
+    prompt gentoo      # root's prompt
 } else {
-    prompt wandsas3
-    #prompt adam2 8bit
-    #prompt clover
+    prompt wandsas2
 }
 
 [[ -n "$SCHROOT_CHROOT_NAME" ]] && PS1="($SCHROOT_CHROOT_NAME) $PS1"
@@ -542,10 +535,9 @@ unset TMOUT
 
 # }}}
 
-# {{{ Run hooks
+# {{{ Specific to local setups
 
 sh_load_status 'local hooks'
-
 run_hooks .zsh/rc.d
 
 # }}}

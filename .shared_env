@@ -13,12 +13,6 @@
 
 [[ -n "$shared_env_loaded" ]] && return 0
 
-# {{{ System Environment
-
-[[ -r "/etc/profile" ]] && source /etc/profile
-
-# }}}
-
 # {{{ Are we interactive?
 
 case "$-" in
@@ -73,32 +67,6 @@ sh_load_status () {
 
 sh_load_status .shared_env
 
-# {{{ ZDOTDIR, ZDOTDIRPATH, ZDOTUSER
-
-# See .zshenv
-
-zdotdir=${ZDOTDIR:-$HOME}
-ZDOTDIR="$zdotdir"
-ZDOT_RUN_HOOKS="$ZDOTDIR/.zsh/functions/run_hooks"
-export ZDOTDIR ZDOT_RUN_HOOKS
-
-# Define a search path to be used by run_hooks
-if [ "$ZDOTDIR" = "$HOME" ]; then
-  ZDOTDIRPATH=$ZDOTDIR
-  ZDOTDIRREVPATH=$ZDOTDIR
-else
-  OTHER_USER=1
-  export OTHER_USER
-  ZDOTDIRPATH="$ZDOTDIR $HOME"
-  ZDOTDIRREVPATH="$HOME $ZDOTDIR"
-fi
-export ZDOTDIRPATH ZDOTDIRREVPATH
-
-[ -z "$ZDOTUSER" ] && [ -e ~/.zdotuser ] && ZDOTUSER=`cat ~/.zdotuser`
-export ZDOTUSER
-
-# }}}
-
 # {{{ Shared functions
 
 die () {
@@ -125,6 +93,32 @@ check_com () {
     [ "$#" != 1 ] && die "Usage: ${0##*/} <command>"
     command -v $1 >/dev/null 2>&1 && return 0 || return 1
 }
+
+# }}}
+
+# {{{ ZDOTDIR, ZDOTDIRPATH, ZDOTUSER
+
+# See .zshenv
+
+zdotdir=${ZDOTDIR:-$HOME}
+ZDOTDIR="$zdotdir"
+ZDOT_RUN_HOOKS="$ZDOTDIR/.zsh/functions/run_hooks"
+export ZDOTDIR ZDOT_RUN_HOOKS
+
+# Define a search path to be used by run_hooks
+if [ "$ZDOTDIR" = "$HOME" ]; then
+  ZDOTDIRPATH=$ZDOTDIR
+  ZDOTDIRREVPATH=$ZDOTDIR
+else
+  OTHER_USER=1
+  export OTHER_USER
+  ZDOTDIRPATH="$ZDOTDIR $HOME"
+  ZDOTDIRREVPATH="$HOME $ZDOTDIR"
+fi
+export ZDOTDIRPATH ZDOTDIRREVPATH
+
+[ -z "$ZDOTUSER" ] && [ -e ~/.zdotuser ] && ZDOTUSER=`cat ~/.zdotuser`
+export ZDOTUSER
 
 # }}}
 
@@ -164,6 +158,7 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswi
 
 [[ -d "$GOPATH/bin" ]]      && pathmunge $GOPATH/bin
 [[ -d "$HOME/.rust/bin" ]]  && pathmunge $HOME/.rust/bin
+[[ -d "$HOME/.cargo/bin" ]]  && pathmunge $HOME/.cargo/bin
 [[ -d "$HOME/.cask/bin" ]]  && pathmunge $HOME/.cask/bin
 [[ -d "$HOME/.local/bin" ]] && pathmunge $HOME/.local/bin
 [[ -d "$HOME/bin" ]]        && pathmunge $HOME/bin
@@ -171,7 +166,7 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswi
 # }}}
 
 # {{{ Running shared hooks
-. $ZDOT_RUN_HOOKS .shared_env.d
+. $ZDOT_RUN_HOOKS .shared/env.d
 
 if [ -n "$shell_interactive" ]; then
   . $ZDOTDIR/.shared_rc

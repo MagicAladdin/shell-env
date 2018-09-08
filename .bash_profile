@@ -1,6 +1,6 @@
 # $Id: ~/.bash_profile wandsas 2018/07/13
-#
-# Wandsas .bash_prfole
+
+# Wandsas .bash_profile
 
 # .bash_profile is invoked in preference to .profile by interactive
 # login shells, and by non-interactive shells with the --login option.
@@ -11,8 +11,6 @@
 [ -n "$INHERIT_ENV" ] && return 0
 
 [[ -r "$HOME/.bashrc" ]] && source $HOME/.bashrc
-
-# {{{
 
 . $ZDOT_RUN_HOOKS .bash/profile.d
 

@@ -45,7 +45,7 @@ fi
 
 # }}}
 
-. $ZDOT_RUN_HOOKS .shared_rc.d
+. $ZDOT_RUN_HOOKS .shared/rc.d
 
 shared_rc_loaded=y
 
